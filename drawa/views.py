@@ -2,13 +2,39 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from django.contrib.auth.decorators import login_required
 from .models import Product, Store
+from datetime import datetime, timezone
 
 @require_safe
 def index(request):
+    now_draws = {}
+    upcoming_draws = {}
+
+    # 현재시간
+    now = datetime.now(timezone.utc)
+
     products = Product.objects.all()
+    for product in products:
+        # 신발의 드로우 정보
+        draws = product.draw_set.order_by('start')
+
+        # 가장 빨리 시작되는 드로우의 시간
+        if draws:
+            draw_time = draws[0].start
+
+            # 아직 진행중이 아닌 드로우
+            if now < draw_time:
+                upcoming_draws[product.id] = draws[0].end
+            # 진행 중인 드로우
+            else:
+                now_draws[product.id] = draws[0].end
+
+    # print(now_draws)
+    # print(upcoming_draws)
 
     context = {
         'products': products,
+        'now_draws': now_draws,
+        'upcoming_draws': upcoming_draws,
     }
     return render(request, 'drawa/index.html', context)
 

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'drawa',
     
     # Third-pary Libraries
+    'django_seed',
 
     # Django Core
     'rest_framework',
