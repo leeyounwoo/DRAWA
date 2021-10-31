@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+  <h1 class="text-center">Draw Calandar</h1>
+
+  <div class="row">
+
+    <aside class="col-1">
+    </aside>
+
+    <main class="col-10">
+    
+      <div class="row">
+
+        <h2>진행 중인 제품</h2>
+
+        <div class="col align-self-center" style="width: 5%;">
+          <form action="">
+            <button>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="200" fill="currentColor" class="bi bi-chevron-compact-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223z"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <div style="width: 90%;">
+          <article class="row row-cols-4 g-1">
+            {% for product in products %}
+              {% if forloop.counter <= 4 and forloop.counter >= 1 %}
+                {% include 'articles/now_card.html' %}
+              {% endif %}
+            {% endfor %}
+          </article>
+        </div>
+
+        <div class="col align-self-center" style="width: 5%;">
+          <form action="">
+            <button>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="200" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+        
+      </div>
+      
+      <br>
+
+      <div class="row">
+
+        <h2>다가오는 제품</h2>
+        <article class="row row-cols-4 g-1">
+          {% for product in products %}
+            {% if forloop.counter <= util.max_show %}
+              {% include 'articles/upcoming_card.html' %}
+            {% endif %}
+          {% endfor %}
+        </article>
+
+        <div class="row my-3">
+          <form action="{% url 'articles:more_and_less' %}" method="POST">
+            {% csrf_token %}
+            <button id="more_and_less_button" class="col-12">{{ util.button_text }}</button>
+          </form>
+        </div>
+
+      </div>
+
+    </main>
+
+    <aside class="col-1">
+    </aside>
+
+  </div>
+
+</div>
+
+
+{% endblock content %}
