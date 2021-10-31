@@ -31,8 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Custom Apps
     'accounts',
     'drawa',
+    
+    # Third-pary Libraries
+
+    # Django Core
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,7 +62,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

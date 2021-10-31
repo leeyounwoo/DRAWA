@@ -10,7 +10,7 @@ def index(request):
     context = {
         'products': products,
     }
-    return render(request, 'articles/index.html', context)
+    return render(request, 'drawa/index.html', context)
 
 
 @require_safe
@@ -27,7 +27,7 @@ def detail(request, shoes_pk):
         'draw': draw,
         'store': store, 
     }
-    return render(request, 'articles/detail.html', context)
+    return render(request, 'drawa/detail.html', context)
 
 
 @login_required
@@ -38,7 +38,7 @@ def place(request):
     context = {
         'stores': stores,
     }
-    return render(request, 'articles/place.html', context)
+    return render(request, 'drawa/place.html', context)
 
 
 @require_POST
@@ -56,7 +56,7 @@ def shoes_reservation(request, shoes_pk):
     else:
         draw.reservation.add(request.user)
     
-    return redirect('articles:shoes_detail')
+    return redirect('drawa:shoes_detail')
 
 
 @require_POST
@@ -74,5 +74,5 @@ def interesting(request, shoes_pk):
         shoes.wishlist.add(request.user)
     
     # 그 전에 있던 페이지로 이동
-    return redirect('articles:shoes_detail')
-    # return redirect('articles:index')
+    return redirect('drawa:shoes_detail')
+    # return redirect('drawa:index')

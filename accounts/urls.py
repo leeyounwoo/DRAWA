@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from articles import views as a_views
+from drawa import views as a_views
 
 app_name = 'accounts'
 
