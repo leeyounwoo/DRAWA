@@ -28,13 +28,13 @@
         </div>
 
         <div style="width: 90%;">
-          <article class="row row-cols-4 g-1">
+          <section class="row row-cols-4 g-1">
             {% for product in products %}
               {% if forloop.counter <= 4 and forloop.counter >= 1 %}
-                {% include 'articles/now_card.html' %}
+                {% include 'drawa/now_card.html' %}
               {% endif %}
             {% endfor %}
-          </article>
+          </section>
         </div>
 
         <div class="col align-self-center" style="width: 5%;">
@@ -54,20 +54,13 @@
       <div class="row">
 
         <h2>다가오는 제품</h2>
-        <article class="row row-cols-4 g-1">
+        <section class="row row-cols-4 g-1">
           {% for product in products %}
             {% if forloop.counter <= util.max_show %}
-              {% include 'articles/upcoming_card.html' %}
+              {% include 'drawa/upcoming_card.html' %}
             {% endif %}
           {% endfor %}
-        </article>
-
-        <div class="row my-3">
-          <form action="{% url 'articles:more_and_less' %}" method="POST">
-            {% csrf_token %}
-            <button id="more_and_less_button" class="col-12">{{ util.button_text }}</button>
-          </form>
-        </div>
+        </section>
 
       </div>
 

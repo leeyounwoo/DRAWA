@@ -3,8 +3,8 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 
 
-class User(AbstractUser):
-    phone = models.TextField()
+# class User(AbstractUser):
+#     phone = models.TextField()
 
 
 class Store(models.Model):
