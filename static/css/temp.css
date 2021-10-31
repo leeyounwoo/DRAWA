@@ -1,0 +1,85 @@
+.product_list_wrap{
+  max-width: 1280px;
+  margin: 0 auto 60px;
+  overflow-anchor: none;
+}
+.product_list{
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  display: inline-block;
+  padding: 0 16px;
+  width: auto;
+}
+.product_item{  
+  position:relative;
+  float: none;
+  vertical-align: top;
+  margin: 15px 0 0;
+  display: inline-block;
+  padding: 0 8px;
+  width: 216px;
+  clear: left;
+  transition: all .4s ease-in-out;
+}
+.thumb_box{
+  position: relative;
+}
+.btn_wish{
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  padding: 5px;
+}
+.time_count_now{
+  font-size: 15px;
+  color: red;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  margin: 0;
+}
+.time_count_future{
+  font-size: 18px;
+  color: green;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  margin: 0;
+}
+.btn_area{
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  bottom: 5px;
+}
+.btn_draw{
+  font-size: 10px;
+  /* width: 100%; */
+  height: 30px;
+}
+.brand{
+  display: block;
+}
+.brand_text{
+  /* overflow: 요소내의 컨텐츠가 너무 커서 요소 내에 모두 보여주기 힘들때 사용 */
+  /* visible: 기본값, 넘칠 경우 컨텐츠가 상자 밖으로 보여짐 */
+  /* hidden: 넘치는 부분은 잘려서 보여지지 않음 */
+  /* scroll: 스크롤바가 추가되어 스크롤할 수 있음 */
+  overflow: hidden;
+  /* 밑줄이 브랜드 길이만큼 */
+  display: inline-block;
+  vertical-align: top;
+  height: 25px;
+  line-height: 25px;
+  padding-bottom: 2px;
+  font-size: 25px;
+  font-weight: 700;
+  color: black;
+  /* -o-text-overflow: ellipsis; */
+  /* text-overflow: ellipsis; */
+  border-bottom: 1px solid black;
+}
+.icon_green{
+  color:green
+}
