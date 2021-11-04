@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 
 User = get_user_model()
@@ -27,7 +28,6 @@ def login(request):
     return render(request, 'accounts/login.html', context)
 
 
-@require_POST
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
@@ -70,23 +70,78 @@ def profile(request, username):
     return render(request, 'accounts/profile.html', context)
 
 
-@require_safe
-def calander(request, username):
-    profile = get_object_or_404(User, username=username)
-    
+@login_required
+@require_http_methods(['GET', 'POST'])
+def update(request, username):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('articles:index')
+    else:
+        form = CustomUserChangeForm(instance=request.user)
     context = {
-        'profile': profile, 
-        
+        'form': form,
     }
-    return render(request, 'accounts/calander.html', context)
+    return render(request, 'accounts/update.html', context)
 
 
-@require_safe
-def interest(request, username):
-    profile = get_object_or_404(User, username=username)
-    
+# @login_required
+# @require_http_methods(['GET', 'POST'])
+# def change_password(request):
+#     if request.method == 'POST':
+#         form = PasswordChangeForm(request.user, request.POST)
+#         if form.is_valid():
+#             form.save()
+#             update_session_auth_hash(request, form.user)
+#             return redirect('articles:index')
+#     else:
+#         form = PasswordChangeForm(request.user)
+#     context = {
+#         'form': form,
+#     }
+#     return render(request, 'accounts/change_password.html', context)
+
+
+def profile(request, username):
+    person = get_object_or_404(get_user_model(), username=username)
     context = {
-        'profile': profile, 
-        
+        'person': person,
     }
-    return render(request, 'accounts/interest.html', context)
+    return render(request, 'accounts/profile.html', context)
+
+
+
+def calander(request):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+    
+    # shoes = get_object_or_404(Product, pk=shoes_pk)
+    # draw = shoes.draw_set.all()
+
+    # # 이미 예약 해놨다면 -> 취소
+    # if draw.reservation.filter(pk=request.user.pk).exists():
+    #     draw.reservation.remove(request.user)
+    # # 예약
+    # else:
+    #     draw.reservation.add(request.user)
+    
+    # return redirect('drawa:shoes_detail')
+
+
+def interest(request):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+    
+    # shoes = get_object_or_404(Product, pk=shoes_pk)
+
+    # # 이미 관심 등록 해놨다면 -> 취소
+    # if shoes.wishlist.filter(pk=request.user.pk).exists():
+    #     shoes.wishlist.remove(request.user)
+    # # 관심 등록
+    # else:
+    #     shoes.wishlist.add(request.user)
+    
+    # # 그 전에 있던 페이지로 이동
+    # return redirect('drawa:shoes_detail')
+    # # return redirect('drawa:index')
