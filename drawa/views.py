@@ -76,3 +76,11 @@ def interesting(request, shoes_pk):
     # 그 전에 있던 페이지로 이동
     return redirect('drawa:shoes_detail')
     # return redirect('drawa:index')
+
+
+
+def favorite(request):
+    context = {
+        
+    }
+    return render(request, 'drawa/favorite.html', context)

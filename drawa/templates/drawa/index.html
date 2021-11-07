@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <div class="container">
@@ -17,35 +16,7 @@
 
         <h2>진행 중인 제품</h2>
 
-        <div class="col align-self-center" style="width: 5%;">
-          <form action="">
-            <button>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="200" fill="currentColor" class="bi bi-chevron-compact-left" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223z"/>
-              </svg>
-            </button>
-          </form>
-        </div>
-
-        <div style="width: 90%;">
-          <section class="row row-cols-4 g-1">
-            {% for product in products %}
-              {% if forloop.counter <= 4 and forloop.counter >= 1 %}
-                {% include 'drawa/now_card.html' %}
-              {% endif %}
-            {% endfor %}
-          </section>
-        </div>
-
-        <div class="col align-self-center" style="width: 5%;">
-          <form action="">
-            <button>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="200" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
-              </svg>
-            </button>
-          </form>
-        </div>
+        {% include 'drawa/now_product_list.html' %}
         
       </div>
       
@@ -54,12 +25,13 @@
       <div class="row">
 
         <h2>다가오는 제품</h2>
-        <section class="row row-cols-4 g-1">
-          {% for product in products %}
-            {% if forloop.counter <= util.max_show %}
+        <section>
+          <div id="other-product-list" class="row row-cols-4 g-1">
+            {% for product in upcomming_products %}
               {% include 'drawa/upcoming_card.html' %}
-            {% endif %}
-          {% endfor %}
+            {% endfor %}
+          </div>
+          <button id="more-less-btn" class="col-12">지난 상품 보기</button>
         </section>
 
       </div>
@@ -73,5 +45,77 @@
 
 </div>
 
-
 {% endblock content %}
+
+{% block script %}
+<script>
+  function setAttribute(htmlObject, attrName, attrValue) {
+    let attr = document.createAttribute(attrName)
+    attr.value = attrValue
+    htmlObject.setAttributeNode(attr)    
+  }
+
+  const carouselIndicator = document.querySelector("#carouselNowProductList .carousel-indicators")
+  // const length = "{{ products.count }}"
+  const length = 10
+
+  const carouselNum = parseInt((length-1)/4+1)
+
+  for (let i = 0; i < carouselNum; i++) {
+    if (i === 0) {
+      const btn = document.createElement('button')
+      btn.type = 'button'
+      // btn.data-bs-target = '#carouselNowProductList'
+      setAttribute(btn, 'data-bs-target', '#carouselNowProductList')
+      // btn.data-bs-slide-to = i
+      setAttribute(btn, 'data-bs-slide-to', `${i}`)
+      btn.classList.add('active')
+      // btn.aria-current = 'true'
+      setAttribute(btn, 'aria-current', true)
+      // btn.aria-label = `Slide ${i+1}`
+      setAttribute(btn, 'aria-label', `Slide ${i+1}`)
+      carouselIndicator.appendChild(btn)
+    } else {
+      const btn = document.createElement('button')
+      btn.type = 'button'
+      // btn.data-bs-target = '#carouselNowProductList'
+      setAttribute(btn, 'data-bs-target', '#carouselNowProductList')
+      // btn.data-bs-slide-to = i
+      setAttribute(btn, 'data-bs-slide-to', `${i}`)
+      // btn.aria-label = `Slide ${i+1}`
+      setAttribute(btn, 'aria-label', `Slide ${i+1}`)
+      carouselIndicator.appendChild(btn)
+    }
+  }
+
+  const carouselInner = document.querySelector('#carouselNowProductList .carousel-inner')
+  let carouselItemLast = null
+  for (let i = 0; i < length; i++) {
+    if (i % 4 === 0) {
+      const carouselItem = document.createElement('div')
+      setAttribute(carouselItem, 'data-bs-interval', 10000)
+      carouselItem.classList.add('carousel-item')
+      if (i === 0){
+        carouselItem.classList.add('active')
+      }
+      const row = document.createElement('div')
+      row.classList.add('row', 'row-cols-4')
+      carouselItem.appendChild(row)
+      carouselInner.appendChild(carouselItem)
+      carouselItemLast = carouselItem
+    }
+
+    const row = carouselItemLast.querySelector('.row')
+    const col = document.createElement('div')
+    col.classList.add('col')
+    // const img = document.createElement('img')
+    // img.src = "/static/img/testimg.jpg"
+    // img.classList.add('d-block', 'w-100')
+    // col.appendChild(img)
+    col.innerHTML = `{% include 'drawa/now_card.html' %}`
+    row.appendChild(col)
+
+  }
+  
+</script>
+{% endblock script %}
