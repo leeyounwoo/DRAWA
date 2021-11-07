@@ -29,7 +29,7 @@
 
         <div style="width: 90%;">
           <section class="row row-cols-4 g-1">
-            {% for product in products %}
+            {% for product in now_draws %}
               {% if forloop.counter <= 4 and forloop.counter >= 1 %}
                 {% include 'drawa/now_card.html' %}
               {% endif %}
@@ -57,6 +57,7 @@
         <section class="row row-cols-4 g-1">
           {% for product in products %}
             {% if forloop.counter <= util.max_show %}
+            
               {% include 'drawa/upcoming_card.html' %}
             {% endif %}
           {% endfor %}
@@ -72,6 +73,9 @@
   </div>
 
 </div>
+{% comment %} <script>
+var today = new Date();
 
+</script> {% endcomment %}
 
 {% endblock content %}

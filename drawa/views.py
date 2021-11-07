@@ -6,7 +6,7 @@ from .models import Product, Store
 @require_safe
 def index(request):
     products = Product.objects.all()
-
+    
     context = {
         'products': products,
     }
