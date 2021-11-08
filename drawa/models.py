@@ -47,13 +47,14 @@ class Product(models.Model):
 
 
 class Draw(models.Model):
+    can_delivery = models.BooleanField(default=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     url = models.TextField()
     start = models.DateTimeField()
     end = models.DateTimeField()
 
-    can_delivery = models.BooleanField(default=True)
     is_direct = models.BooleanField(default=True)
     reserve = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
