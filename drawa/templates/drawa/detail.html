@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+  <img src="{{product.image_url}}" alt="">
+  <p>{{product.brand}}</p>
+  <p>{{product.name_eng}}</p>
+  <p>{{product.name_kor}}</p>
+
+  <p>시간</p>
+  <p>{{product.code}}</p>
+  <p>{{product.released_data}}</p>
+  <p>{{product.view_count}}</p>
+  <p>{{draws|length}}</p>
+  <hr>
+
+
+
+  <h2>국내 발매처</h2>
+  <h3>국내배송</h3>
+  {% for draw in korea_can_delivery %}
+    <p>응모처: {{ draw.store.name }}</P>
+    <img src="{{draw.store.nation_flag_url}}" alt="">
+    <img src="{{ draw.store.store_img_url }}" alt="">
+    <P>시작 시간: {{draw.start}}</P>
+    <P>종료 시간: {{draw.end}}</P>
+    <P>가격: {{draw.product.price}}</P>
+    <hr>
+  {% endfor %}
+
+  <h3>매장수령</h3>
+  {% for draw in korea_not_delivery %}
+    <p>응모처: {{ draw.store.name }}</P>
+    <img src="{{draw.store.nation_flag_url}}" alt="">
+    <img src="{{ draw.store.store_img_url }}" alt="">
+    <P>시작 시간: {{draw.start}}</P>
+    <P>종료 시간: {{draw.end}}</P>
+    <P>가격: {{draw.product.price}}</P>
+    <hr>
+  {% endfor %}
+
+  <h2>해외 발매채</h2>
+  <h3>직배송</h3>
+  {% for draw in abroad_direct %}
+    <p>응모처: {{ draw.store.name }}</P>
+    <img src="{{draw.store.nation_flag_url}}" alt="">
+    <img src="{{ draw.store.store_img_url }}" alt="">
+    <P>시작 시간: {{draw.start}}</P>
+    <P>종료 시간: {{draw.end}}</P>
+    <P>가격: {{draw.product.price}}</P>
+    <hr>
+  {% endfor %}
+
+  <h3>직배송 불가</h3>
+  {% for draw in abroad_not_direct %}
+    <p>응모처: {{ draw.store.name }}</P>
+    <img src="{{draw.store.nation_flag_url}}" alt="">
+    <img src="{{ draw.store.store_img_url }}" alt="">
+    <P>시작 시간: {{draw.start}}</P>
+    <P>종료 시간: {{draw.end}}</P>
+    <P>가격: {{draw.product.price}}</P>
+    <hr>
+  {% endfor %}
+
+    
+{% endblock  %}
