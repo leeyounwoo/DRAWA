@@ -1,38 +1,55 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from django.contrib.auth.decorators import login_required
-from .models import Product, Store
-from datetime import datetime, timezone
+from .models import Draw, Product, Store
+from datetime import datetime
+from pytz import timezone
 
 @require_safe
 def index(request):
-    now_draws = {}
-    upcoming_draws = {}
-
     # 현재시간
-    now = datetime.now(timezone.utc)
+    now_time = datetime.now(timezone('Asia/Seoul'))
 
-    products = Product.objects.all()
-    for product in products:
-        # 신발의 드로우 정보
-        draws = product.draw_set.order_by('start')
+    # 드로우 정보 가져오기
+    now = Draw.objects.filter(start__lte=now_time, end__gt=now_time)
+    upcoming = Draw.objects.filter(start__gt=now_time)
 
-        # 가장 빨리 시작되는 드로우의 시간
-        if draws:
-            draw_time = draws[0].start
+    # 드로우에서 product에 접근
+    # 현재 진행 중인 드로우
+    now_products = []
+    now_draws = {}
+    for draw in now:
+        now_products.append(draw.product)
 
-            # 아직 진행중이 아닌 드로우
-            if now < draw_time:
-                upcoming_draws[product.id] = draws[0].end
-            # 진행 중인 드로우
-            else:
-                now_draws[product.id] = draws[0].end
+        if draw.product.pk in now_draws.keys():
+            now_draws[draw.product.pk] = min(now_draws[draw.product.pk], draw.end)
+        else:
+            now_draws[draw.product.pk] = draw.end
+
+    now_products = list(set(now_products)) # 중복제거
+
+    # 진행 예정 드로우
+    upcoming_products = []
+    upcoming_draws = {}
+    for draw in upcoming:
+        upcoming_products.append(draw.product)
+
+        if draw.product.pk in upcoming_draws.keys():
+            upcoming_draws[draw.product.pk] = min(upcoming_draws[draw.product.pk], draw.start)
+        else:
+            upcoming_draws[draw.product.pk] = draw.start # end? start?
+
+    upcoming_products = list(set(upcoming_products))
+
+    # print(now_products)
+    # print(upcoming_products)
 
     # print(now_draws)
     # print(upcoming_draws)
 
     context = {
-        'products': products,
+        'now_products': now_products,
+        'upcoming_products': upcoming_products,
         'now_draws': now_draws,
         'upcoming_draws': upcoming_draws,
     }
