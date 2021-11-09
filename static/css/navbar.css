@@ -1,0 +1,109 @@
+
+body {
+  margin: 0;
+  font-family: 'Jua', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: white; */
+  padding: 8px 12px;
+}
+
+.navbar_homelogo {
+  font-size: 24px;
+  color: white;
+}
+
+.navbar_menu {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+}
+
+.navbar_menu li {
+  padding: 8px 12px; 
+}
+
+.nav-inside {
+  color: black; 
+}
+
+.navbar_menu li:hover,
+.navbar_log li:hover {
+  background-color: #b4b4b4;
+  border-radius: 4px;
+}
+
+.navbar_log {
+  display: flex; 
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  padding: 8px 12px;
+  padding-left: 0;
+}
+
+/* navbar_log 간격조정 */
+.navbar_log li:first-child {
+  margin-right: 9px;
+}
+
+.navbar_top {
+  -webkit-box-shadow: 0 1px 0 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 1px 0 0 rgb(0 0 0 / 10%);
+}
+
+/* 햄버거 */
+.navbar_toggle {
+  position: absolute;
+  display: none;
+  right: 32px;
+  font-size: 24px;
+}
+
+/* 반응형 */
+@media screen and (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    /* 왼쪽정렬 */
+    align-items: flex-start;
+    padding: 8px 24px;
+  }
+  
+  .navbar_menu {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar_menu li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar_log {
+    /* display: none; -> 화면 작아지면 안보이게함 */
+    display: none;
+    justify-content: center;
+    width:100%;
+  }
+
+  .navbar_toggle {
+    display: block;
+  }
+
+  
+  .navbar_menu.active,
+  .navbar_log.active {
+    display: flex;
+  }
+}

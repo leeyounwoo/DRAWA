@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button>로그인</button>
-</form>
+{% load static %}
+<link rel="stylesheet" href="/static/css/navbar.css">
+
+
+<div class="logins">
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>로그인</button>
+  </form>
+</div>
+
 {% endblock content %}

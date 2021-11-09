@@ -1,43 +1,67 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand ms-5" href="{% url 'drawa:index' %}">드로와!</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end me-5" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'accounts:interest' %}">관심 상품</a>
+  <!-- 로고 이미지 -->
+  <script src="https://kit.fontawesome.com/f67e24b5a5.js" crossorigin="anonymous"></script>
+  <!-- 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/css/navbar.css">
+  <!-- JS -->
+  <script src="/static/js/util.js" defer></script>
+
+
+  <div class="navbar-whole">
+    
+      {% comment %} 로그인창 {% endcomment %}
+      {% if request.user.is_authenticated %} 
+      <ul class="navbar_log">
+        <li>
+          <a href="{% url 'accounts:profile' request.user.username %}">{{request.user.username}}의 프로필</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'accounts:calander' %}">내 응모일정</a>
+        <li>
+          <a href="{% url 'accounts:update' request.user.username %}">회원정보수정</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="#">매장 선택</a>
+        <li>
+          <form action="{% url 'accounts:quit' %}" method="POST">
+          {% csrf_token %}
+          <input type="submit" value="탈퇴">
+          </form>
+        </li>
+        <li><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
+      </ul>
+
+      {% comment %} not 로그인 {% endcomment %}
+      {% else %}
+
+      <div class="navbar_top">
+        <ul class="navbar_log">
+          <li><a href="{% url 'accounts:login' %}">로그인</a></li>
+          <li><a href="{% url 'accounts:signup' %}">회원가입</a></li>
+        </ul>
+      </div>
+
+      <hr>
+
+    <nav class="navbar">
+      <div class="navbar_homelogo">
+
+        <!-- 홈화면으로 가는 링크 -->
+        <a href="{% url 'drawa:index' %}">드로와!</a>
+      </div>
+
+      <ul class="navbar_menu">
+        <li><a class="nav-inside" aria-current="page" href="{% url 'accounts:interest' %}">관심 상품</a></li>
+        <li><a class="nav-inside" href="{% url 'accounts:calander' %}">내 응모일정</a></li>
+        <li><a class="nav-inside" href="#">매장 선택</a></li>
+        <li>
+          <i class="fas fa-search"></i>
         </li>
       </ul>
-    </div>
-    <ul>
-    {% if request.user.is_authenticated %}
-    <li class="inline">
-      <a href="{% url 'accounts:profile' request.user.username %}">{{request.user.username}}의 프로필</a>
-      <a href="{% url 'accounts:update' request.user.username %}">회원정보수정</a>
-      <form action="{% url 'accounts:quit' %}" method="POST">
-        {% csrf_token %}
-        <input type="submit" value="탈퇴">
-      </form>
-    </li>
-    <li class="inline">
-      <a href="{% url 'accounts:logout' %}">로그아웃</a>
-    </li>
-    {% else %}
-    <li class="inline">
-      <a href="{% url 'accounts:login' %}">로그인</a>
-    </li>
-    <li class="inline">
-      <a href="{% url 'accounts:signup' %}">회원가입</a>
-    </li>
-    {% endif %}
-  </ul>
+    
+  
+        <a href="#" class="navbar_toggle">
+          <i class="fas fa-bars"></i>
+        </a>
+    </nav>
   </div>
-</nav>
+
+      {% endif %}
+    
