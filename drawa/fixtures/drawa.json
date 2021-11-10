@@ -1,0 +1,292 @@
+[
+{
+    "model": "drawa.store",
+    "pk": 1,
+    "fields": {
+        "name": "SNKRS 미국",
+        "nation": "USA",
+        "instagram_url": "",
+        "kakao_url": "",
+        "nation_flag_url": "https://shoeinfo.co.kr/countryflag_img_upload/%EB%AF%B8%EA%B5%AD.png",
+        "store_img_url": "https://shoeinfo.co.kr/brand_img_upload/SNKRS.gif",
+        "select": []
+    }
+},
+{
+    "model": "drawa.store",
+    "pk": 2,
+    "fields": {
+        "name": "서울 조던",
+        "nation": "Korea",
+        "instagram_url": "https://www.instagram.com/jordan_seoul_official/",
+        "kakao_url": "https://pf.kakao.com/_JsTvxb",
+        "nation_flag_url": "https://shoeinfo.co.kr/countryflag_img_upload/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD.png",
+        "store_img_url": "https://shoeinfo.co.kr/brand_img_upload/JORDAN%20SEOUL.gif",
+        "select": []
+    }
+},
+{
+    "model": "drawa.store",
+    "pk": 3,
+    "fields": {
+        "name": "홍대 조던",
+        "nation": "Korea",
+        "instagram_url": "https://www.instagram.com/jordan_hongdae/",
+        "kakao_url": "https://pf.kakao.com/_gfxfNj",
+        "nation_flag_url": "https://shoeinfo.co.kr/countryflag_img_upload/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD.png",
+        "store_img_url": "https://shoeinfo.co.kr/brand_img_upload/JORDAN%20HONGDAE.gif",
+        "select": []
+    }
+},
+{
+    "model": "drawa.store",
+    "pk": 4,
+    "fields": {
+        "name": "SNKRS 한국",
+        "nation": "Korea",
+        "instagram_url": "",
+        "kakao_url": "",
+        "nation_flag_url": "https://shoeinfo.co.kr/countryflag_img_upload/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD.png",
+        "store_img_url": "https://shoeinfo.co.kr/brand_img_upload/SNKRS.gif",
+        "select": []
+    }
+},
+{
+    "model": "drawa.store",
+    "pk": 5,
+    "fields": {
+        "name": "bstn",
+        "nation": "Germany",
+        "instagram_url": "",
+        "kakao_url": "",
+        "nation_flag_url": "https://shoeinfo.co.kr/countryflag_img_upload/%EB%8F%85%EC%9D%BC.png",
+        "store_img_url": "https://shoeinfo.co.kr/brand_img_upload/bstn.gif",
+        "select": []
+    }
+},
+{
+    "model": "drawa.store",
+    "pk": 6,
+    "fields": {
+        "name": "svd (앱)",
+        "nation": "Spain",
+        "instagram_url": "",
+        "kakao_url": "",
+        "nation_flag_url": "https://shoeinfo.co.kr/countryflag_img_upload/%EC%8A%A4%ED%8E%98%EC%9D%B8.png",
+        "store_img_url": "https://shoeinfo.co.kr/brand_img_upload/svd.gif",
+        "select": []
+    }
+},
+{
+    "model": "drawa.store",
+    "pk": 7,
+    "fields": {
+        "name": "DOVER 런던",
+        "nation": "UK",
+        "instagram_url": "",
+        "kakao_url": "",
+        "nation_flag_url": "https://shoeinfo.co.kr/countryflag_img_upload/%EC%98%81%EA%B5%AD.png",
+        "store_img_url": "https://shoeinfo.co.kr/brand_img_upload/dover.gif",
+        "select": []
+    }
+},
+{
+    "model": "drawa.product",
+    "pk": 1,
+    "fields": {
+        "name_kor": "트레비스 스캇 x 나이키 에어 맥스 1 사턴 골드",
+        "name_eng": "Travis Scott x Nike Air Max 1 Saturn Gold",
+        "brand": "Nike",
+        "collection": "Nike Air Max 1",
+        "code": "DO9392-700",
+        "relesed_date": "2021-12-16",
+        "image_url": "https://shoeinfo.co.kr/sneaker_img_upload/Travis%20Scott%20x%20Nike%20Air%20Max%201%20Saturn%20Gold.png",
+        "price": 209000,
+        "view_count": 0,
+        "wish": []
+    }
+},
+{
+    "model": "drawa.product",
+    "pk": 2,
+    "fields": {
+        "name_kor": "트레비스 스캇 x 나이키 에어 맥스 1 바로크 브라운",
+        "name_eng": "Travis Scott x Nike Air Max 1 Baroque Brown",
+        "brand": "Nike",
+        "collection": "Nike Air Max 1",
+        "code": "DO9392-200",
+        "relesed_date": "2021-12-16",
+        "image_url": "https://shoeinfo.co.kr/sneaker_img_upload/Travis%20Scott%20x%20Nike%20Air%20Max%201%20Baroque%20Brown.png",
+        "price": 209000,
+        "view_count": 0,
+        "wish": []
+    }
+},
+{
+    "model": "drawa.product",
+    "pk": 3,
+    "fields": {
+        "name_kor": "건담 x 나이키 SB 덩크 하이 유니콘",
+        "name_eng": "Gundam x Nike SB Dunk High Unicorn",
+        "brand": "Air Jordan",
+        "collection": "Dunk High",
+        "code": "DH7717-100",
+        "relesed_date": "2021-11-16",
+        "image_url": "https://shoeinfo.co.kr/sneaker_img_upload/Gundam%20x%20Nike%20SB%20Dunk%20High%20Unicorn.png",
+        "price": 139000,
+        "view_count": 0,
+        "wish": []
+    }
+},
+{
+    "model": "drawa.product",
+    "pk": 4,
+    "fields": {
+        "name_kor": "오프화이트 x 조던 2 로우 바시티 로얄",
+        "name_eng": "Off-White x Jordan 2 Low Varsity Royal",
+        "brand": "Air Jordan",
+        "collection": "Jordan 2",
+        "code": "DJ4375-004",
+        "relesed_date": "2021-11-12",
+        "image_url": "https://shoeinfo.co.kr/sneaker_img_upload/Off-White%20x%20Jordan%202%20Low%20Varsity%20Royal.png",
+        "price": 299000,
+        "view_count": 0,
+        "wish": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 1,
+    "fields": {
+        "can_delivery": true,
+        "product": 1,
+        "store": 1,
+        "url": "https://www.nike.com/launch/t/air-max-1-cactus-jack-saturn-gold",
+        "start": "2021-12-17T13:00:00Z",
+        "end": "2021-12-17T13:10:00Z",
+        "is_direct": false,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 2,
+    "fields": {
+        "can_delivery": true,
+        "product": 2,
+        "store": 1,
+        "url": "https://www.nike.com/launch/t/air-max-1-cactus-jack-baroque-brown",
+        "start": "2021-12-17T13:00:00Z",
+        "end": "2021-12-17T13:10:00Z",
+        "is_direct": false,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 3,
+    "fields": {
+        "can_delivery": true,
+        "product": 3,
+        "store": 1,
+        "url": "https://www.nike.com/launch/t/sb-dunk-high-gundam",
+        "start": "2021-11-11T14:00:00Z",
+        "end": "2021-11-11T14:10:00Z",
+        "is_direct": true,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 4,
+    "fields": {
+        "can_delivery": false,
+        "product": 4,
+        "store": 2,
+        "url": "https://docs.google.com/forms/d/e/1FAIpQLScjiPLCCDOxwRyhK5hImtzH87Www__TFtndqXDwsYVD1V9Trg/viewform",
+        "start": "2021-11-09T00:00:00Z",
+        "end": "2021-11-11T00:00:00Z",
+        "is_direct": true,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 5,
+    "fields": {
+        "can_delivery": false,
+        "product": 4,
+        "store": 3,
+        "url": "https://docs.google.com/forms/d/e/1FAIpQLScjiPLCCDOxwRyhK5hImtzH87Www__TFtndqXDwsYVD1V9Trg/viewform",
+        "start": "2021-11-09T00:00:00Z",
+        "end": "2021-11-11T00:04:00Z",
+        "is_direct": true,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 6,
+    "fields": {
+        "can_delivery": true,
+        "product": 4,
+        "store": 4,
+        "url": "https://www.nike.com/kr/launch/t/men/fw/basketball/DJ4375-004/mslh95/air-jordan-2-retro-low-sp",
+        "start": "2021-11-12T01:00:00Z",
+        "end": "2021-11-12T01:30:00Z",
+        "is_direct": true,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 7,
+    "fields": {
+        "can_delivery": true,
+        "product": 4,
+        "store": 5,
+        "url": "https://raffle.bstn.com/off-white-x-air-jordan-2-retro-low-sp-black-royal-?__cf_chl_rt_tk=TvVyog7a3_1Q7gNq4ZqVRC1ul9WRd90Cs0HZIyQKWSs-1636533788-0-gaNycGzNCNE",
+        "start": "2021-11-10T08:43:25Z",
+        "end": "2021-11-11T14:10:00Z",
+        "is_direct": false,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 8,
+    "fields": {
+        "can_delivery": true,
+        "product": 4,
+        "store": 6,
+        "url": "https://www.sivasdescalzo.com/en/p/air-jordan-2-retro-low-sp-x-off-white-dj4375-004",
+        "start": "2021-11-10T08:44:54Z",
+        "end": "2021-11-11T14:10:00Z",
+        "is_direct": false,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 9,
+    "fields": {
+        "can_delivery": true,
+        "product": 4,
+        "store": 7,
+        "url": "https://shop.doverstreetmarket.com/collections/raffle/products/copy-of-nike-air-jordan-2-retro-low-sp-dj4375-004",
+        "start": "2021-11-10T08:46:36Z",
+        "end": "2021-11-12T08:00:00Z",
+        "is_direct": true,
+        "reserve": [],
+        "participate": []
+    }
+}
+]
