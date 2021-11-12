@@ -143,21 +143,22 @@ def detail(request, shoes_pk):
     context = {
         'product': product,
         'total_proceeding_draw_count': total_proceeding_draw_count,
+        
         'korea_can_delivery_proceeding_draws': korea_can_delivery_proceeding_draws,
-        'korea_not_delivery_proceeding_draws': korea_not_delivery_proceeding_draws,
-        'abroad_direct_proceeding_draws': abroad_direct_proceeding_draws,
-        'abroad_not_direct_proceeding_draws': abroad_not_direct_proceeding_draws,
-
         'korea_can_delivery_upcoming_draws': korea_can_delivery_upcoming_draws,
-        'korea_not_delivery_upcoming_draws': korea_not_delivery_upcoming_draws,
-        'abroad_direct_upcoming_draws': abroad_direct_upcoming_draws,
-        'abroad_not_direct_upcoming_draws': abroad_not_direct_upcoming_draws,
-
         'korea_can_delivery_finished_draws': korea_can_delivery_finished_draws,
+        
+        'korea_not_delivery_proceeding_draws': korea_not_delivery_proceeding_draws,
+        'korea_not_delivery_upcoming_draws': korea_not_delivery_upcoming_draws,
         'korea_not_delivery_finished_draws': korea_not_delivery_finished_draws,
+        
+        'abroad_direct_proceeding_draws': abroad_direct_proceeding_draws,
+        'abroad_direct_upcoming_draws': abroad_direct_upcoming_draws,
         'abroad_direct_finished_draws': abroad_direct_finished_draws,
-        'abroad_not_direct_finished_draws': abroad_not_direct_finished_draws,
-       
+        
+        'abroad_not_direct_proceeding_draws': abroad_not_direct_proceeding_draws,
+        'abroad_not_direct_upcoming_draws': abroad_not_direct_upcoming_draws,
+        'abroad_not_direct_finished_draws': abroad_not_direct_finished_draws,       
     }
     return render(request, 'drawa/detail.html', context)
 
