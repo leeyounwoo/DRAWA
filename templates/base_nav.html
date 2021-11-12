@@ -22,7 +22,7 @@
         <li>
           <form action="{% url 'accounts:quit' %}" method="POST">
           {% csrf_token %}
-          <input type="submit" value="탈퇴">
+          <input type="submit" value="탈퇴" class="quit-btn"> 
           </form>
         </li>
         <li><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
@@ -37,9 +37,9 @@
           <li><a href="{% url 'accounts:signup' %}">회원가입</a></li>
         </ul>
       </div>
+    {% endif %}
 
-      <hr>
-
+      <hr class="hr_margin">
     <nav class="navbar">
       <div class="navbar_homelogo">
 
@@ -63,5 +63,4 @@
     </nav>
   </div>
 
-      {% endif %}
     
