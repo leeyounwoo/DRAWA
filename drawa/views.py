@@ -60,43 +60,104 @@ def index(request):
 @require_safe
 def detail(request, shoes_pk):
     product = get_object_or_404(Product, pk=shoes_pk)
+    # 현재시간
+    now_time = datetime.now(timezone('Asia/Seoul'))
 
-    draws = product.draw_set.all()
+    # 드로우 정보 가져오기
+    # 진행중: 시작시간 <= 현재 시간 <= 종료시간
+    proceeding_draws = product.draw_set.filter(start__lte=now_time, end__gte=now_time)
+    # 진행예정: 시작시간 > 현재 시간
+    upcoming_draws = product.draw_set.filter(start__gt=now_time)
+    # 종료: 종료시간 < 현재 시간
+    finished_draws = product.draw_set.filter(end__lte=now_time)
 
-    # 1번째 방법: filter 사용
-    # temp = draws.filter(can_delivery = True) # ==> (속성) 가능
-    # temp = draws.filter(store__nation='korea') # ==> (외래키.속성) 불가능
-    # print(temp)
-
-    # 2번째 방법: for문 + 쿼리셋 합치기
-    korea_can_delivery = []
-    korea_not_delivery = []
-    abroad_direct = []
-    abroad_not_direct = []
-    for draw in draws:
-        if draw.store.nation == 'korea':
+    # 진행중
+    korea_can_delivery_proceeding_draws = []
+    korea_not_delivery_proceeding_draws = []
+    abroad_direct_proceeding_draws = []
+    abroad_not_direct_proceeding_draws = []
+    for draw in proceeding_draws:
+        if draw.store.nation == 'Korea':
             if draw.can_delivery == True:
-                print('국내_온라인', draw)
-                korea_can_delivery.append(draw)
+                
+                # print('국내_온라인', draw)
+                korea_can_delivery_proceeding_draws.append(draw)
             else:               
-                print('국내_오프라인', draw)
-                korea_not_delivery.append(draw)
+                # print('국내_오프라인', draw)
+                korea_not_delivery_proceeding_draws.append(draw)
         else:
             if draw.is_direct:
-                print('직배송', draw)
-                abroad_direct.append(draw)
+                # print('직배송', draw)
+                abroad_direct_proceeding_draws.append(draw)
             else:
-                print('직배송 X', draw)
-                abroad_not_direct.append(draw)
+                # print('직배송 X', draw)
+                abroad_not_direct_proceeding_draws.append(draw)
 
+    # 진행예정
+    korea_can_delivery_upcoming_draws = []
+    korea_not_delivery_upcoming_draws = []
+    abroad_direct_upcoming_draws = []
+    abroad_not_direct_upcoming_draws = []
+    for draw in upcoming_draws:
+        if draw.store.nation == 'Korea':
+            if draw.can_delivery == True:
+                # print('국내_온라인', draw)
+                korea_can_delivery_upcoming_draws.append(draw)
+            else:               
+                # print('국내_오프라인', draw)
+                korea_not_delivery_upcoming_draws.append(draw)
+        else:
+            if draw.is_direct:
+                # print('직배송', draw)
+                abroad_direct_upcoming_draws.append(draw)
+            else:
+                # print('직배송 X', draw)
+                abroad_not_direct_upcoming_draws.append(draw)
 
+    # 종료
+    korea_can_delivery_finished_draws = []
+    korea_not_delivery_finished_draws = []
+    abroad_direct_finished_draws = []
+    abroad_not_direct_finished_draws = []
+    for draw in finished_draws:
+        if draw.store.nation == 'Korea':
+            if draw.can_delivery == True:
+                # print('국내_온라인', draw)
+                korea_can_delivery_finished_draws.append(draw)
+            else:               
+                # print('국내_오프라인', draw)
+                korea_not_delivery_finished_draws.append(draw)
+        else:
+            if draw.is_direct:
+                # print('직배송', draw)
+                abroad_direct_finished_draws.append(draw)
+            else:
+                # print('직배송 X', draw)
+                abroad_not_direct_finished_draws.append(draw)
+    
+    # 진행중인 응모개수
+    total_proceeding_draw_count = 0
+    if proceeding_draws:
+        total_proceeding_draw_count = len(proceeding_draws)
 
     context = {
         'product': product,
-        'korea_can_delivery': korea_can_delivery,
-        'korea_not_delivery': korea_not_delivery,
-        'abroad_direct': abroad_direct,
-        'abroad_not_direct': abroad_not_direct,
+        'total_proceeding_draw_count': total_proceeding_draw_count,
+        'korea_can_delivery_proceeding_draws': korea_can_delivery_proceeding_draws,
+        'korea_not_delivery_proceeding_draws': korea_not_delivery_proceeding_draws,
+        'abroad_direct_proceeding_draws': abroad_direct_proceeding_draws,
+        'abroad_not_direct_proceeding_draws': abroad_not_direct_proceeding_draws,
+
+        'korea_can_delivery_upcoming_draws': korea_can_delivery_upcoming_draws,
+        'korea_not_delivery_upcoming_draws': korea_not_delivery_upcoming_draws,
+        'abroad_direct_upcoming_draws': abroad_direct_upcoming_draws,
+        'abroad_not_direct_upcoming_draws': abroad_not_direct_upcoming_draws,
+
+        'korea_can_delivery_finished_draws': korea_can_delivery_finished_draws,
+        'korea_not_delivery_finished_draws': korea_not_delivery_finished_draws,
+        'abroad_direct_finished_draws': abroad_direct_finished_draws,
+        'abroad_not_direct_finished_draws': abroad_not_direct_finished_draws,
+       
     }
     return render(request, 'drawa/detail.html', context)
 
@@ -145,7 +206,7 @@ def detail(request, shoes_pk):
 #         shoes.wishlist.add(request.user)
     
     # 그 전에 있던 페이지로 이동
-    return redirect('drawa:shoes_detail')
+    # return redirect('drawa:shoes_detail')
     # return redirect('drawa:index')
 
 

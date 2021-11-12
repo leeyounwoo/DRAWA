@@ -1,64 +1,166 @@
+<link rel="stylesheet" href="/static/css/detail.css">
+
 {% extends 'base.html' %}
 {% block content %}
-  <img src="{{product.image_url}}" alt="">
-  <p>{{product.brand}}</p>
-  <p>{{product.name_eng}}</p>
-  <p>{{product.name_kor}}</p>
+  <div class="page-container">
+    {% comment %} 제품 정보 {% endcomment %}
+    <div class="productInfo-container">
+      {% comment %} 제품 이미지 {% endcomment %}
+      <div class="productImg-container">
+        <img src="{{product.image_url}}" alt="">
+      </div>
 
-  <p>시간</p>
-  <p>{{product.code}}</p>
-  <p>{{product.released_data}}</p>
-  <p>{{product.view_count}}</p>
-  <p>{{draws|length}}</p>
-  <hr>
+      {% comment %} 제품 상세정보 {% endcomment %}
+      
+      <div class="productDetailInfo-container">
+        {% comment %} 제품 이름 {% endcomment %}
+        <div class="productDetailInfo-name">
+          <div class="productFullName_eng">
+            <span>{{product.name_eng}}</span>
+          </div>
+          <div class="productFullName_kor">
+            <span>{{product.name_kor}}</span>
+          </div>
+        </div>
+
+        {% comment %} 제품 정보 {% endcomment %}
+        <div class="productDetailInfo">
+          <div class="productDetailInfo-subtitle">
+            <p>제품 정보</p>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">브랜드</span>
+            <span class="productinfo-cateAns">{{product.brand}}</span>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">제품코드</span>
+            <span class="productinfo-cateAns">{{product.code}}</span>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">발매일</span>
+            <span class="productinfo-cateAns">{{product.relesed_date}}</span>
+          </div>
+          <div class="productDetailInfo-content" style="border-bottom:1px solid #e8e8e8;padding-bottom:20px !important;">
+            <span class="productinfo-cate">발매가</span>
+            <span class="productinfo-cateAns">{{product.price}}원</span>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">조회수</span>
+            <span class="productinfo-cateAns">{{product.view_count}}</span>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">진행중인 발매처</span>
+            <span class="productinfo-cateAns">{{ total_proceeding_draw_count }}</span>
+          </div>
+        </div>
 
 
+      </div>
+    
+    </div>
 
-  <h2>국내 발매처</h2>
-  <h3>국내배송</h3>
-  {% for draw in korea_can_delivery %}
-    <p>응모처: {{ draw.store.name }}</P>
-    <img src="{{draw.store.nation_flag_url}}" alt="">
-    <img src="{{ draw.store.store_img_url }}" alt="">
-    <P>시작 시간: {{draw.start}}</P>
-    <P>종료 시간: {{draw.end}}</P>
-    <P>가격: {{draw.product.price}}</P>
-    <hr>
-  {% endfor %}
+    <div class="releaseList-countryDiv">
+      <div class="sub-title">
+        <h4>국내 발매처
+          <span>총 0건</span>
+        </h4>
+      </div>
+      <h6>국내배송</h6>
 
-  <h3>매장수령</h3>
-  {% for draw in korea_not_delivery %}
-    <p>응모처: {{ draw.store.name }}</P>
-    <img src="{{draw.store.nation_flag_url}}" alt="">
-    <img src="{{ draw.store.store_img_url }}" alt="">
-    <P>시작 시간: {{draw.start}}</P>
-    <P>종료 시간: {{draw.end}}</P>
-    <P>가격: {{draw.product.price}}</P>
-    <hr>
-  {% endfor %}
+      {% for draw in korea_can_delivery_finished_draws %}
+          {% include 'drawa/detailcard.html' %}
 
-  <h2>해외 발매채</h2>
-  <h3>직배송</h3>
-  {% for draw in abroad_direct %}
-    <p>응모처: {{ draw.store.name }}</P>
-    <img src="{{draw.store.nation_flag_url}}" alt="">
-    <img src="{{ draw.store.store_img_url }}" alt="">
-    <P>시작 시간: {{draw.start}}</P>
-    <P>종료 시간: {{draw.end}}</P>
-    <P>가격: {{draw.product.price}}</P>
-    <hr>
-  {% endfor %}
+        {% comment %} 카드섹션 {% endcomment %}
+        {% comment %} <div class="country-table">
+          <div class="releaseCard">
+            <div class="CardContent1">
+              <div class="CardLogo">
+                <img class="Card_brandImg" src="{{ draw.store.store_img_url }}" alt="">
+                  <img class="countryflag" src="{{draw.store.nation_flag_url}}" alt="">
+              </div>
+              <div class="CardContentList">
+                <span>{{draw.store.name}}</span>
+              </div>
+            </div>
+            <div class="CardContent2">
+              <div class="CardContent2-drawTime">
+                <div class="Cate">응모 시간</div>
+                <div class="Content">{{draw.start}} ~ </div>
+              </div>
+              <div class="CardContent2-status"></div>
+                <div class="Cate">진행 상태</div>
+                <div class="Content">진행중</div>
+            </div>
+            <div class="CardContent3">
+              <!-- 링크박스 -->
+              <span id="card-linkkr2" style="">
+                <div id="count_todays_statuskr2linkBtn" class="card_link" style="cursor:pointer;" onclick="window.open('https://www.nike.com/kr/launch/t/men/fw/basketball/DJ4375-004/mslh95/air-jordan-2-retro-low-sp', 'mywindow');">
+                  <span class="direct-link-text" id="count_todays_statuskr2linkBtnText">응모링크</span>
+                </div>
+              </span>
+							<!-- 체크박스 -->
+              <span class="links-container" id="links-container-kr-2">
+                <input type="hidden" id="drawCheck_statuskr2" value="참여전">
+                <!-- 참여전 체크박스 -->
+                <div class="card_checkBox" id="draw_checkBoxkr2" style="background-color:white; color:#b3b3b3;">
+                  <span><i class="fas fa-check" aria-hidden="true"></i> <span id="drawCheck_statusTxtkr2"></span></span>
+                </div> 
+              </span>
+						</div>
+          </div>
+        </div> {% endcomment %}
+      {% endfor %}
 
-  <h3>직배송 불가</h3>
-  {% for draw in abroad_not_direct %}
-    <p>응모처: {{ draw.store.name }}</P>
-    <img src="{{draw.store.nation_flag_url}}" alt="">
-    <img src="{{ draw.store.store_img_url }}" alt="">
-    <P>시작 시간: {{draw.start}}</P>
-    <P>종료 시간: {{draw.end}}</P>
-    <P>가격: {{draw.product.price}}</P>
-    <hr>
-  {% endfor %}
+
+    </div>
+    <h2>국내 발매처</h2>
+    <h3>국내배송</h3>
+    {% for draw in korea_can_delivery %}
+      <p>응모처: {{ draw.store.name }}</P>
+      <img src="{{draw.store.nation_flag_url}}" alt="">
+      <img src="{{ draw.store.store_img_url }}" alt="">
+      <P>시작 시간: {{draw.start}}</P>
+      <P>종료 시간: {{draw.end}}</P>
+      <P>가격: {{draw.product.price}}</P>
+      <hr>
+    {% endfor %}
+
+    <h3>매장수령</h3>
+    {% for draw in korea_not_delivery %}
+      <p>응모처: {{ draw.store.name }}</P>
+      <img src="{{draw.store.nation_flag_url}}" alt="">
+      <img src="{{ draw.store.store_img_url }}" alt="">
+      <P>시작 시간: {{draw.start}}</P>
+      <P>종료 시간: {{draw.end}}</P>
+      <P>가격: {{draw.product.price}}</P>
+      <hr>
+    {% endfor %}
+
+    <h2>해외 발매채</h2>
+    <h3>직배송</h3>
+    {% for draw in abroad_direct %}
+      <p>응모처: {{ draw.store.name }}</P>
+      <img src="{{draw.store.nation_flag_url}}" alt="">
+      <img src="{{ draw.store.store_img_url }}" alt="">
+      <P>시작 시간: {{draw.start}}</P>
+      <P>종료 시간: {{draw.end}}</P>
+      <P>가격: {{draw.product.price}}</P>
+      <hr>
+    {% endfor %}
+
+    <h3>직배송 불가</h3>
+    {% for draw in abroad_not_direct %}
+      <p>응모처: {{ draw.store.name }}</P>
+      <img src="{{draw.store.nation_flag_url}}" alt="">
+      <img src="{{ draw.store.store_img_url }}" alt="">
+      <P>시작 시간: {{draw.start}}</P>
+      <P>종료 시간: {{draw.end}}</P>
+      <P>가격: {{draw.product.price}}</P>
+      <hr>
+    {% endfor %}
+
+    </div>
 
     
+  </div>
 {% endblock  %}
