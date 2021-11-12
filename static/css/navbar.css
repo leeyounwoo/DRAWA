@@ -7,14 +7,13 @@ body {
 a {
   text-decoration: none;
   color: black;
-
 }
+
 .navbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  /* background-color: white; */
   padding: 8px 12px;
+  padding-top: 0px;
 }
 
 .navbar_homelogo {
@@ -44,21 +43,19 @@ a {
 
 .navbar_log {
   display: flex; 
-  align-items: center;
-  justify-content: space-between;
+  /* align-items: center;  */
+  justify-content: end;
   list-style: none;
-  padding: 8px 12px;
-  padding-left: 0;
+  margin-right: 8px;
+  margin-bottom: 0px;
 }
 
-/* navbar_log 간격조정 */
+.hr_margin {
+  margin: 0px;
+}
+
 .navbar_log li:first-child {
   margin-right: 9px;
-}
-
-.navbar_top {
-  -webkit-box-shadow: 0 1px 0 0 rgb(0 0 0 / 10%);
-  box-shadow: 0 1px 0 0 rgb(0 0 0 / 10%);
 }
 
 /* 햄버거 */
@@ -68,6 +65,18 @@ a {
   right: 32px;
   font-size: 24px;
 }
+
+/* 탈퇴버튼 */
+.quit-btn {
+  border: none;
+  background-color: white;
+}
+
+.quit-btn:hover {
+  background-color: #b4b4b4;
+  border-radius: 4px;
+}
+
 
 /* 반응형 */
 @media screen and (max-width: 768px) {

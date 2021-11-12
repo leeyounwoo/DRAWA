@@ -2,15 +2,16 @@
 
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="/static/css/navbar.css">
+<link rel="stylesheet" href="/static/css/login.css">
 
-
-<div class="logins">
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button>로그인</button>
-  </form>
+<div class="login_box">
+  <div class="logins">
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button>로그인</button>
+    </form>
+  </div>
 </div>
 
 {% endblock content %}
