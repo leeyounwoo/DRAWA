@@ -71,13 +71,13 @@
             <p>다가오는 응모: {{korea_can_delivery_upcoming_draws|length}}</p>
             <p>종료된 응모: {{korea_can_delivery_finished_draws|length}}</p>
             {% for draw in korea_can_delivery_proceeding_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/proceedingCard.html' %}
             {% endfor %}
             {% for draw in korea_can_delivery_upcoming_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/upcomingCard.html' %}
             {% endfor %}
             {% for draw in korea_can_delivery_finished_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/finishedCard.html' %}
             {% endfor %}   
           </div>
         </div>
@@ -88,13 +88,13 @@
             <p>다가오는 응모: {{korea_not_delivery_upcoming_draws|length}}</p>
             <p>종료된 응모: {{korea_not_delivery_finished_draws|length}}</p>
             {% for draw in korea_not_delivery_proceeding_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/proceedingCard.html' %}
             {% endfor %}
             {% for draw in korea_not_delivery_upcoming_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/upcomingCard.html' %}
             {% endfor %}
             {% for draw in korea_not_delivery_finished_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/finishedCard.html' %}
             {% endfor %}   
           </div>
         </div>
@@ -111,13 +111,13 @@
             <p>다가오는 응모: {{abroad_direct_upcoming_draws|length}}</p>
             <p>종료된 응모: {{abroad_direct_finished_draws|length}}</p>
             {% for draw in abroad_direct_proceeding_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/proceedingCard.html' %}
             {% endfor %}
             {% for draw in abroad_direct_upcoming_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/upcomingCard.html' %}
             {% endfor %}
             {% for draw in abroad_direct_finished_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/finishedCard.html' %}
             {% endfor %}   
           </div>
         </div>
@@ -128,13 +128,13 @@
             <p>다가오는 응모: {{abroad_not_direct_upcoming_draws|length}}</p>
             <p>종료된 응모: {{abroad_not_direct_finished_draws|length}}</p>
             {% for draw in abroad_not_direct_proceeding_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/proceedingCard.html' %}
             {% endfor %}
             {% for draw in abroad_not_direct_upcoming_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/upcomingCard.html' %}
             {% endfor %}
             {% for draw in abroad_not_direct_finished_draws %}
-                {% include 'drawa/detailcard.html' %}
+                {% include 'drawa/detailCard/finishedCard.html' %}
             {% endfor %}   
           </div>
         </div>

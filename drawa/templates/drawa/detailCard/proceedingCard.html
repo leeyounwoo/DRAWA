@@ -1,0 +1,45 @@
+<div class="country-table">
+  <div class="releaseCard">
+    <div class="CardContent1">
+      <div class="CardLogo">
+        <img class="Card_brandImg" src="{{ draw.store.store_img_url }}" alt="">
+          <img class="countryflag" src="{{draw.store.nation_flag_url}}" alt="">
+      </div>
+      <div class="CardContentList">
+        <span>{{draw.store.name}}</span>
+      </div>
+    </div>
+    <div class="CardContent2">
+      <div class="CardContent2-drawTime">
+        <div class="Cate">응모 시간</div>
+        <div class="Content"> ~ {{draw.end}}</div>
+      </div>
+      <div class="CardContent2-status"></div>
+        <div class="Cate">진행 상태</div>
+        <div class="Content" id="state">진행중</div>
+    </div>
+    <div class="CardContent3">
+      <!-- 링크박스 -->
+      <span id="card-linkkr2" style="">
+        <div class="card_link" style="cursor:pointer;" >
+          <span class="direct-link-text">응모링크</span>
+        </div>
+      </span>
+      <!-- 체크박스 -->
+      <span class="links-container">
+        <input type="hidden">
+        <!-- 참여전 체크박스 -->
+        <div class="card_checkBox" id="draw_checkBoxkr2" style="background-color:white; color:#b3b3b3;">
+          <span><i class="fas fa-check" aria-hidden="true"></i> <span id="drawCheck_statusTxtkr2"></span></span>
+        </div> 
+      </span>
+    </div>
+  </div>
+</div>
+
+{% block script %}
+<script>
+const alert = document.querySelector('#state')
+console.log(alert)
+</script>
+{% endblock script %}
