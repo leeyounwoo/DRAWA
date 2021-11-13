@@ -59,108 +59,86 @@
     
     </div>
 
-    <div class="releaseList-countryDiv">
-      <div class="sub-title">
-        <h4>국내 발매처
-          <span>총 0건</span>
-        </h4>
-      </div>
-      <h6>국내배송</h6>
-
-      {% for draw in korea_can_delivery_finished_draws %}
-          {% include 'drawa/detailcard.html' %}
-
-        {% comment %} 카드섹션 {% endcomment %}
-        {% comment %} <div class="country-table">
-          <div class="releaseCard">
-            <div class="CardContent1">
-              <div class="CardLogo">
-                <img class="Card_brandImg" src="{{ draw.store.store_img_url }}" alt="">
-                  <img class="countryflag" src="{{draw.store.nation_flag_url}}" alt="">
-              </div>
-              <div class="CardContentList">
-                <span>{{draw.store.name}}</span>
-              </div>
-            </div>
-            <div class="CardContent2">
-              <div class="CardContent2-drawTime">
-                <div class="Cate">응모 시간</div>
-                <div class="Content">{{draw.start}} ~ </div>
-              </div>
-              <div class="CardContent2-status"></div>
-                <div class="Cate">진행 상태</div>
-                <div class="Content">진행중</div>
-            </div>
-            <div class="CardContent3">
-              <!-- 링크박스 -->
-              <span id="card-linkkr2" style="">
-                <div id="count_todays_statuskr2linkBtn" class="card_link" style="cursor:pointer;" onclick="window.open('https://www.nike.com/kr/launch/t/men/fw/basketball/DJ4375-004/mslh95/air-jordan-2-retro-low-sp', 'mywindow');">
-                  <span class="direct-link-text" id="count_todays_statuskr2linkBtnText">응모링크</span>
-                </div>
-              </span>
-							<!-- 체크박스 -->
-              <span class="links-container" id="links-container-kr-2">
-                <input type="hidden" id="drawCheck_statuskr2" value="참여전">
-                <!-- 참여전 체크박스 -->
-                <div class="card_checkBox" id="draw_checkBoxkr2" style="background-color:white; color:#b3b3b3;">
-                  <span><i class="fas fa-check" aria-hidden="true"></i> <span id="drawCheck_statusTxtkr2"></span></span>
-                </div> 
-              </span>
-						</div>
+    <div class="releaseList-countryDiv container">
+      <div class="row">
+        <div class="sub-title">
+          <h4>국내 발매처<span>총 0건</span></h4>
+        </div>
+        <div class="col-6">
+          <div>
+            <h6>국내배송</h6>
+            <p>진행중인 응모: {{korea_can_delivery_proceeding_draws|length}}</p> 
+            <p>다가오는 응모: {{korea_can_delivery_upcoming_draws|length}}</p>
+            <p>종료된 응모: {{korea_can_delivery_finished_draws|length}}</p>
+            {% for draw in korea_can_delivery_proceeding_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}
+            {% for draw in korea_can_delivery_upcoming_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}
+            {% for draw in korea_can_delivery_finished_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}   
           </div>
-        </div> {% endcomment %}
-      {% endfor %}
+        </div>
+        <div class="col-6">
+          <div>
+            <h6>매장수령</h6>
+            <p>진행중인 응모: {{korea_not_delivery_proceeding_draws|length}}</p>
+            <p>다가오는 응모: {{korea_not_delivery_upcoming_draws|length}}</p>
+            <p>종료된 응모: {{korea_not_delivery_finished_draws|length}}</p>
+            {% for draw in korea_not_delivery_proceeding_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}
+            {% for draw in korea_not_delivery_upcoming_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}
+            {% for draw in korea_not_delivery_finished_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}   
+          </div>
+        </div>
+      </div>
 
-
+      <div class="row">
+        <div class="sub-title">
+          <h4>해외 발매처<span>총 0건</span></h4>
+        </div>
+        <div class="col-6">
+          <div>
+            <h6>직배송</h6>
+            <p>진행중인 응모: {{abroad_direct_proceeding_draws|length}}</p> 
+            <p>다가오는 응모: {{abroad_direct_upcoming_draws|length}}</p>
+            <p>종료된 응모: {{abroad_direct_finished_draws|length}}</p>
+            {% for draw in abroad_direct_proceeding_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}
+            {% for draw in abroad_direct_upcoming_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}
+            {% for draw in abroad_direct_finished_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}   
+          </div>
+        </div>
+        <div class="col-6">
+          <div>
+            <h6>직배송 불가</h6>
+            <p>진행중인 응모: {{abroad_not_direct_proceeding_draws|length}}</p>
+            <p>다가오는 응모: {{abroad_not_direct_upcoming_draws|length}}</p>
+            <p>종료된 응모: {{abroad_not_direct_finished_draws|length}}</p>
+            {% for draw in abroad_not_direct_proceeding_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}
+            {% for draw in abroad_not_direct_upcoming_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}
+            {% for draw in abroad_not_direct_finished_draws %}
+                {% include 'drawa/detailcard.html' %}
+            {% endfor %}   
+          </div>
+        </div>
+      </div>
     </div>
-    <h2>국내 발매처</h2>
-    <h3>국내배송</h3>
-    {% for draw in korea_can_delivery %}
-      <p>응모처: {{ draw.store.name }}</P>
-      <img src="{{draw.store.nation_flag_url}}" alt="">
-      <img src="{{ draw.store.store_img_url }}" alt="">
-      <P>시작 시간: {{draw.start}}</P>
-      <P>종료 시간: {{draw.end}}</P>
-      <P>가격: {{draw.product.price}}</P>
-      <hr>
-    {% endfor %}
-
-    <h3>매장수령</h3>
-    {% for draw in korea_not_delivery %}
-      <p>응모처: {{ draw.store.name }}</P>
-      <img src="{{draw.store.nation_flag_url}}" alt="">
-      <img src="{{ draw.store.store_img_url }}" alt="">
-      <P>시작 시간: {{draw.start}}</P>
-      <P>종료 시간: {{draw.end}}</P>
-      <P>가격: {{draw.product.price}}</P>
-      <hr>
-    {% endfor %}
-
-    <h2>해외 발매채</h2>
-    <h3>직배송</h3>
-    {% for draw in abroad_direct %}
-      <p>응모처: {{ draw.store.name }}</P>
-      <img src="{{draw.store.nation_flag_url}}" alt="">
-      <img src="{{ draw.store.store_img_url }}" alt="">
-      <P>시작 시간: {{draw.start}}</P>
-      <P>종료 시간: {{draw.end}}</P>
-      <P>가격: {{draw.product.price}}</P>
-      <hr>
-    {% endfor %}
-
-    <h3>직배송 불가</h3>
-    {% for draw in abroad_not_direct %}
-      <p>응모처: {{ draw.store.name }}</P>
-      <img src="{{draw.store.nation_flag_url}}" alt="">
-      <img src="{{ draw.store.store_img_url }}" alt="">
-      <P>시작 시간: {{draw.start}}</P>
-      <P>종료 시간: {{draw.end}}</P>
-      <P>가격: {{draw.product.price}}</P>
-      <hr>
-    {% endfor %}
-
-    </div>
-
-    
   </div>
 {% endblock  %}

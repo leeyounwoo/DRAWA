@@ -12,11 +12,11 @@
     <div class="CardContent2">
       <div class="CardContent2-drawTime">
         <div class="Cate">응모 시간</div>
-        <div class="Content">{{draw.start}} ~ </div>
+        <div class="Content">{{draw.start}} ~ {{draw.end}}</div>
       </div>
       <div class="CardContent2-status"></div>
         <div class="Cate">진행 상태</div>
-        <div class="Content">진행중</div>
+        <div class="Content" id="state">{{state}}</div>
     </div>
     <div class="CardContent3">
       <!-- 링크박스 -->
@@ -36,3 +36,10 @@
     </div>
   </div>
 </div>
+
+{% block script %}
+<script>
+const alert = document.querySelector('#state')
+console.log(alert)
+</script>
+{% endblock script %}

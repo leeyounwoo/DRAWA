@@ -80,10 +80,10 @@ def detail(request, shoes_pk):
         if draw.store.nation == 'Korea':
             if draw.can_delivery == True:
                 
-                # print('국내_온라인', draw)
+                print('국내_온라인', draw)
                 korea_can_delivery_proceeding_draws.append(draw)
             else:               
-                # print('국내_오프라인', draw)
+                print('국내_오프라인', draw)
                 korea_not_delivery_proceeding_draws.append(draw)
         else:
             if draw.is_direct:

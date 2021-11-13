@@ -100,7 +100,7 @@
 
 .releaseCard {
   float: left;
-  width: 47%;
+  /* width: 47%; */
   margin: 1.5% 3% 2% 0;
   box-shadow: 0px 1px 7px #44444487;
   border-radius: 8px;
