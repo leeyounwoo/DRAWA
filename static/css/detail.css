@@ -18,6 +18,13 @@
   position: relative;
 }
 
+.btn-detail-wish {
+  position: absolute;
+  top: 5px;
+  right: 45px;
+  padding: 5px;
+}
+
 .productImg-container > img{
   padding: 10% 0;
   width: 90%;

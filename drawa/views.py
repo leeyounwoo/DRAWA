@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Draw, Product, Store
 from datetime import datetime
 from pytz import timezone
+from django.http import JsonResponse, HttpResponse
 
 @require_safe
 def index(request):
@@ -161,6 +162,25 @@ def detail(request, shoes_pk):
         'abroad_not_direct_finished_draws': abroad_not_direct_finished_draws,       
     }
     return render(request, 'drawa/detail.html', context)
+
+
+@require_POST
+def wish(request, product_pk):
+    if request.user.is_authenticated:
+        product = get_object_or_404(Product, pk=product_pk)
+        if product.wish.filter(pk=request.user.pk).exists():
+            product.wish.remove(request.user)
+            wished = False
+        else:
+            product.wish.add(request.user)
+            wished = True 
+        
+        context = {
+            'wished': wished,
+            'wish_count':product.wish.count()
+        }
+        return JsonResponse(context)        
+    return HttpResponse(status=401)
 
 
 # @login_required

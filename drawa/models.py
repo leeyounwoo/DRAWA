@@ -43,7 +43,7 @@ class Product(models.Model):
     wish = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='wishlist', 
-        blank=True)
+        blank=True, null=True)
 
 
 class Draw(models.Model):
