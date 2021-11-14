@@ -62,7 +62,7 @@
     <div class="releaseList-countryDiv container">
       <div class="row">
         <div class="sub-title">
-          <h4>국내 발매처<span>총 0건</span></h4>
+          <h4>국내 발매처<span> 총 0건</span></h4>
         </div>
         <div class="col-6">
           <div>
@@ -142,3 +142,12 @@
     </div>
   </div>
 {% endblock  %}
+
+{% block script %}
+<script>
+  const drawLink = document.querySelectorAll('.card_link')
+  drawLink.addEventListener('click', function(event) {
+    alert('버튼이 클릭되었습니다.')
+  })
+</script>
+{% endblock script %}
