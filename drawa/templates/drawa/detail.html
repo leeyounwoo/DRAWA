@@ -100,9 +100,9 @@
         <div class="col-6">
           <div>
             <h6>국내배송</h6>
-            <p>진행중인 응모: {{korea_can_delivery_proceeding_draws|length}}</p> 
+            {% comment %} <p>진행중인 응모: {{korea_can_delivery_proceeding_draws|length}}</p> 
             <p>다가오는 응모: {{korea_can_delivery_upcoming_draws|length}}</p>
-            <p>종료된 응모: {{korea_can_delivery_finished_draws|length}}</p>
+            <p>종료된 응모: {{korea_can_delivery_finished_draws|length}}</p> {% endcomment %}
             {% for draw in korea_can_delivery_proceeding_draws %}
                 {% include 'drawa/detailCard/proceedingCard.html' %}
             {% endfor %}
@@ -117,9 +117,9 @@
         <div class="col-6">
           <div>
             <h6>매장수령</h6>
-            <p>진행중인 응모: {{korea_not_delivery_proceeding_draws|length}}</p>
+            {% comment %} <p>진행중인 응모: {{korea_not_delivery_proceeding_draws|length}}</p>
             <p>다가오는 응모: {{korea_not_delivery_upcoming_draws|length}}</p>
-            <p>종료된 응모: {{korea_not_delivery_finished_draws|length}}</p>
+            <p>종료된 응모: {{korea_not_delivery_finished_draws|length}}</p> {% endcomment %}
             {% for draw in korea_not_delivery_proceeding_draws %}
                 {% include 'drawa/detailCard/proceedingCard.html' %}
             {% endfor %}
@@ -140,9 +140,9 @@
         <div class="col-6">
           <div>
             <h6>직배송</h6>
-            <p>진행중인 응모: {{abroad_direct_proceeding_draws|length}}</p> 
+            {% comment %} <p>진행중인 응모: {{abroad_direct_proceeding_draws|length}}</p> 
             <p>다가오는 응모: {{abroad_direct_upcoming_draws|length}}</p>
-            <p>종료된 응모: {{abroad_direct_finished_draws|length}}</p>
+            <p>종료된 응모: {{abroad_direct_finished_draws|length}}</p> {% endcomment %}
             {% for draw in abroad_direct_proceeding_draws %}
                 {% include 'drawa/detailCard/proceedingCard.html' %}
             {% endfor %}
@@ -157,9 +157,9 @@
         <div class="col-6">
           <div>
             <h6>직배송 불가</h6>
-            <p>진행중인 응모: {{abroad_not_direct_proceeding_draws|length}}</p>
+            {% comment %} <p>진행중인 응모: {{abroad_not_direct_proceeding_draws|length}}</p>
             <p>다가오는 응모: {{abroad_not_direct_upcoming_draws|length}}</p>
-            <p>종료된 응모: {{abroad_not_direct_finished_draws|length}}</p>
+            <p>종료된 응모: {{abroad_not_direct_finished_draws|length}}</p> {% endcomment %}
             {% for draw in abroad_not_direct_proceeding_draws %}
                 {% include 'drawa/detailCard/proceedingCard.html' %}
             {% endfor %}

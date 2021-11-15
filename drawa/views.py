@@ -141,6 +141,8 @@ def detail(request, shoes_pk):
     if proceeding_draws:
         total_proceeding_draw_count = len(proceeding_draws)
 
+    print(product.wish.all())
+
     context = {
         'product': product,
         'total_proceeding_draw_count': total_proceeding_draw_count,
@@ -183,6 +185,22 @@ def wish(request, product_pk):
     return HttpResponse(status=401)
 
 
+@require_POST
+def reserve(request, draw_pk):
+    if request.user.is_authenticated:
+        draw = get_object_or_404(Draw, pk=draw_pk)
+        if draw.reserve.filter(pk=request.user.pk).exists():
+            draw.reserve.remove(request.user)
+            reserved = False
+        else:
+            draw.reserve.add(request.user)
+            reserved = True
+
+        context = {
+            'reserved': reserved,
+        }
+        return JsonResponse(context)
+    return HttpResponse(status=401)
 # @login_required
 # @require_safe
 # def place(request):

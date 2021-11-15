@@ -120,6 +120,12 @@
   align-items: center;
 }
 
+.CardBell {
+  position: absolute;
+  right: 35px;
+  top: 35px;
+}
+
 .CardLogo {
   display: inline-block;
   vertical-align: top;

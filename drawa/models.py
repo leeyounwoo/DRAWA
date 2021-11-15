@@ -60,9 +60,12 @@ class Draw(models.Model):
     reserve = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='reserved_draws',
-        blank=True)
+        blank=True, 
+        null=True
+    )
     participate = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='participated_draws', 
-        blank=True
+        blank=True, 
+        null=True
     )
