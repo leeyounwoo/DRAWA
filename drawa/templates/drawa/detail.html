@@ -1,64 +1,280 @@
+<link rel="stylesheet" href="/static/css/detail.css">
+
 {% extends 'base.html' %}
 {% block content %}
-  <img src="{{product.image_url}}" alt="">
-  <p>{{product.brand}}</p>
-  <p>{{product.name_eng}}</p>
-  <p>{{product.name_kor}}</p>
+  <div class="page-container">
+    {% comment %} 제품 정보 {% endcomment %}
+    <div class="productInfo-container">
+      {% comment %} 제품 이미지 {% endcomment %}
+      <div class="productImg-container">
+        <img src="{{product.image_url}}" alt="">
+        {% comment %} <a href="" class="btn-detail-wish">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-bookmark" viewBox="0 0 16 16">
+            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+          </svg>
+        </a> {% endcomment %}
 
-  <p>시간</p>
-  <p>{{product.code}}</p>
-  <p>{{product.released_data}}</p>
-  <p>{{product.view_count}}</p>
-  <p>{{draws|length}}</p>
-  <hr>
+        <div>
+          <form data-product-id="{{ product.pk }}" class="btn-detail-wish" method="POST">
+            {% csrf_token %}
+            {% if user in product.wish.all %}
+              <button id="wishBtn-{{ product.pk }}" class="btn btn-link text-dark">
+                {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                </svg> {% endcomment %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="dark" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+                  <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                </svg>
+              </button>
+            {% else %}
+              <button id="wishBtn-{{ product.pk }}" class="btn btn-link">
+                {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                </svg> {% endcomment %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="dark" class="bi bi-bookmark" viewBox="0 0 16 16">
+                  <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                </svg>
+              </button>
+            {% endif %}
+            <span id="wishCnt-{{product.pk }}">{{ product.wish.count }} 명</span>
+          </form>
+        </div>
+        
+
+      </div>
+
+      {% comment %} 제품 상세정보 {% endcomment %}
+      
+      <div class="productDetailInfo-container">
+        {% comment %} 제품 이름 {% endcomment %}
+        <div class="productDetailInfo-name">
+          <div class="productFullName_eng">
+            <span>{{product.name_eng}}</span>
+          </div>
+          <div class="productFullName_kor">
+            <span>{{product.name_kor}}</span>
+          </div>
+        </div>
+
+        {% comment %} 제품 정보 {% endcomment %}
+        <div class="productDetailInfo">
+          <div class="productDetailInfo-subtitle">
+            <p>제품 정보</p>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">브랜드</span>
+            <span class="productinfo-cateAns">{{product.brand}}</span>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">제품코드</span>
+            <span class="productinfo-cateAns">{{product.code}}</span>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">발매일</span>
+            <span class="productinfo-cateAns">{{product.relesed_date}}</span>
+          </div>
+          <div class="productDetailInfo-content" style="border-bottom:1px solid #e8e8e8;padding-bottom:20px !important;">
+            <span class="productinfo-cate">발매가</span>
+            <span class="productinfo-cateAns">{{product.price}}원</span>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">조회수</span>
+            <span class="productinfo-cateAns">{{product.view_count}}</span>
+          </div>
+          <div class="productDetailInfo-content">
+            <span class="productinfo-cate">진행중인 발매처</span>
+            <span class="productinfo-cateAns">{{ total_proceeding_draw_count }}</span>
+          </div>
+        </div>
 
 
-
-  <h2>국내 발매처</h2>
-  <h3>국내배송</h3>
-  {% for draw in korea_can_delivery %}
-    <p>응모처: {{ draw.store.name }}</P>
-    <img src="{{draw.store.nation_flag_url}}" alt="">
-    <img src="{{ draw.store.store_img_url }}" alt="">
-    <P>시작 시간: {{draw.start}}</P>
-    <P>종료 시간: {{draw.end}}</P>
-    <P>가격: {{draw.product.price}}</P>
-    <hr>
-  {% endfor %}
-
-  <h3>매장수령</h3>
-  {% for draw in korea_not_delivery %}
-    <p>응모처: {{ draw.store.name }}</P>
-    <img src="{{draw.store.nation_flag_url}}" alt="">
-    <img src="{{ draw.store.store_img_url }}" alt="">
-    <P>시작 시간: {{draw.start}}</P>
-    <P>종료 시간: {{draw.end}}</P>
-    <P>가격: {{draw.product.price}}</P>
-    <hr>
-  {% endfor %}
-
-  <h2>해외 발매채</h2>
-  <h3>직배송</h3>
-  {% for draw in abroad_direct %}
-    <p>응모처: {{ draw.store.name }}</P>
-    <img src="{{draw.store.nation_flag_url}}" alt="">
-    <img src="{{ draw.store.store_img_url }}" alt="">
-    <P>시작 시간: {{draw.start}}</P>
-    <P>종료 시간: {{draw.end}}</P>
-    <P>가격: {{draw.product.price}}</P>
-    <hr>
-  {% endfor %}
-
-  <h3>직배송 불가</h3>
-  {% for draw in abroad_not_direct %}
-    <p>응모처: {{ draw.store.name }}</P>
-    <img src="{{draw.store.nation_flag_url}}" alt="">
-    <img src="{{ draw.store.store_img_url }}" alt="">
-    <P>시작 시간: {{draw.start}}</P>
-    <P>종료 시간: {{draw.end}}</P>
-    <P>가격: {{draw.product.price}}</P>
-    <hr>
-  {% endfor %}
-
+      </div>
     
+    </div>
+
+    <div class="releaseList-countryDiv container">
+      <div class="row">
+        <div class="sub-title">
+          <h4>국내 발매처<span> 총 0건</span></h4>
+        </div>
+        <div class="col-6">
+          <div>
+            <h6>국내배송</h6>
+            {% comment %} <p>진행중인 응모: {{korea_can_delivery_proceeding_draws|length}}</p> 
+            <p>다가오는 응모: {{korea_can_delivery_upcoming_draws|length}}</p>
+            <p>종료된 응모: {{korea_can_delivery_finished_draws|length}}</p> {% endcomment %}
+            {% for draw in korea_can_delivery_proceeding_draws %}
+                {% include 'drawa/detailCard/proceedingCard.html' %}
+            {% endfor %}
+            {% for draw in korea_can_delivery_upcoming_draws %}
+                {% include 'drawa/detailCard/upcomingCard.html' %}
+            {% endfor %}
+            {% for draw in korea_can_delivery_finished_draws %}
+                {% include 'drawa/detailCard/finishedCard.html' %}
+            {% endfor %}   
+          </div>
+        </div>
+        <div class="col-6">
+          <div>
+            <h6>매장수령</h6>
+            {% comment %} <p>진행중인 응모: {{korea_not_delivery_proceeding_draws|length}}</p>
+            <p>다가오는 응모: {{korea_not_delivery_upcoming_draws|length}}</p>
+            <p>종료된 응모: {{korea_not_delivery_finished_draws|length}}</p> {% endcomment %}
+            {% for draw in korea_not_delivery_proceeding_draws %}
+                {% include 'drawa/detailCard/proceedingCard.html' %}
+            {% endfor %}
+            {% for draw in korea_not_delivery_upcoming_draws %}
+                {% include 'drawa/detailCard/upcomingCard.html' %}
+            {% endfor %}
+            {% for draw in korea_not_delivery_finished_draws %}
+                {% include 'drawa/detailCard/finishedCard.html' %}
+            {% endfor %}   
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="sub-title">
+          <h4>해외 발매처<span>총 0건</span></h4>
+        </div>
+        <div class="col-6">
+          <div>
+            <h6>직배송</h6>
+            {% comment %} <p>진행중인 응모: {{abroad_direct_proceeding_draws|length}}</p> 
+            <p>다가오는 응모: {{abroad_direct_upcoming_draws|length}}</p>
+            <p>종료된 응모: {{abroad_direct_finished_draws|length}}</p> {% endcomment %}
+            {% for draw in abroad_direct_proceeding_draws %}
+                {% include 'drawa/detailCard/proceedingCard.html' %}
+            {% endfor %}
+            {% for draw in abroad_direct_upcoming_draws %}
+                {% include 'drawa/detailCard/upcomingCard.html' %}
+            {% endfor %}
+            {% for draw in abroad_direct_finished_draws %}
+                {% include 'drawa/detailCard/finishedCard.html' %}
+            {% endfor %}   
+          </div>
+        </div>
+        <div class="col-6">
+          <div>
+            <h6>직배송 불가</h6>
+            {% comment %} <p>진행중인 응모: {{abroad_not_direct_proceeding_draws|length}}</p>
+            <p>다가오는 응모: {{abroad_not_direct_upcoming_draws|length}}</p>
+            <p>종료된 응모: {{abroad_not_direct_finished_draws|length}}</p> {% endcomment %}
+            {% for draw in abroad_not_direct_proceeding_draws %}
+                {% include 'drawa/detailCard/proceedingCard.html' %}
+            {% endfor %}
+            {% for draw in abroad_not_direct_upcoming_draws %}
+                {% include 'drawa/detailCard/upcomingCard.html' %}
+            {% endfor %}
+            {% for draw in abroad_not_direct_finished_draws %}
+                {% include 'drawa/detailCard/finishedCard.html' %}
+            {% endfor %}   
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock  %}
+{% block script %}
+<script>
+  const wishFormList = document.querySelectorAll('.btn-detail-wish')
+  wishFormList.forEach((wishForm) => {
+    wishForm.addEventListener('submit', (e) => {
+      e.preventDefault() // submit 이벤트 동작 방지
+      
+      // Django 서버로 좋아요 요청
+      // POST: http://localhost:8000/articles/:pk/like/
+      // 필요한 정보 1) article.pk 
+      const productId = e.target.dataset.productId
+      const requestUrl = `/drawa/${productId}/wish/`
+      console.log(e)
+      
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      
+      axios.post(requestUrl, {}, { headers: {'X-CSRFToken': csrftoken} })
+        .then((response) => {
+          console.log(response)
+          const wishCount = response.data.wish_count 
+          const wished = response.data.wished 
+          const wishBtn = document.querySelector(`#wishBtn-${productId}`)
+          console.log(wishBtn)
+          if (wished) {
+            wishBtn.classList.add('text-dark')
+            wishBtn.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="dark" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+                <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+              </svg>
+            `
+          } else {
+            wishBtn.classList.remove('text-dark')
+            wishBtn.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="dark" class="bi bi-bookmark" viewBox="0 0 16 16">
+                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+              </svg>
+            `
+          }
+          
+
+          const wishCnt = document.querySelector(`#wishCnt-${productId}`)
+          wishCnt.innerText = `${wishCount} 명`
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            window.location.href = '/accounts/login/'
+          } else {
+            window.alert(error)
+          }
+        })
+    })
+  })
+
+  const reserveFormList = document.querySelectorAll('.btn-draw-reserve')
+  reserveFormList.forEach((reserveForm) => {
+    reserveForm.addEventListener('submit', (e) => {
+      console.log('a')
+      e.preventDefault() // submit 이벤트 동작 방지
+      // Django 서버로 좋아요 요청
+      // POST: http://localhost:8000/articles/:pk/like/
+      // 필요한 정보 1) article.pk 
+      const drawId = e.target.dataset.drawId
+      console.log(drawId)
+      const requestUrl = `/drawa/${drawId}/reserve/`
+      
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      
+      axios.post(requestUrl, {}, { headers: {'X-CSRFToken': csrftoken} })
+        .then((response) => {
+          console.log(response)
+          const reserved = response.data.reserved 
+          const reserveBtn = document.querySelector(`#reserveBtn-${drawId}`)
+          const reserveBell = document.querySelector(`#reserveBell-${drawId}`)
+
+          if (reserved) {
+            console.log('add')
+            reserveBtn.classList.add('reserved_draw')
+            reserveBell.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+              <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+            </svg>
+            `
+          } else {
+            reserveBtn.classList.remove('reserved_draw')
+            reserveBell.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+              <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+            </svg>
+            `
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            window.location.href = '/accounts/login/'
+          } else {
+            window.alert(error)
+          }
+        })
+    })
+  })
+
+</script>
+{% endblock %}

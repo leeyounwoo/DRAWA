@@ -91,6 +91,32 @@
     }
 },
 {
+    "model": "drawa.store",
+    "pk": 8,
+    "fields": {
+        "name": "BEAKER",
+        "nation": "Korea",
+        "instagram_url": "",
+        "kakao_url": "",
+        "nation_flag_url": "https://shoeinfo.co.kr/countryflag_img_upload/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD.png",
+        "store_img_url": "https://shoeinfo.co.kr/brand_img_upload/BEAKER.gif",
+        "select": []
+    }
+},
+{
+    "model": "drawa.store",
+    "pk": 9,
+    "fields": {
+        "name": "나이키 메세나합정",
+        "nation": "Korea",
+        "instagram_url": "",
+        "kakao_url": "",
+        "nation_flag_url": "https://shoeinfo.co.kr/countryflag_img_upload/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD.png",
+        "store_img_url": "https://shoeinfo.co.kr/brand_img_upload/nike.gif",
+        "select": []
+    }
+},
+{
     "model": "drawa.product",
     "pk": 1,
     "fields": {
@@ -151,7 +177,9 @@
         "image_url": "https://shoeinfo.co.kr/sneaker_img_upload/Off-White%20x%20Jordan%202%20Low%20Varsity%20Royal.png",
         "price": 299000,
         "view_count": 0,
-        "wish": []
+        "wish": [
+            2
+        ]
     }
 },
 {
@@ -201,14 +229,29 @@
 },
 {
     "model": "drawa.draw",
-    "pk": 4,
+    "pk": 10,
+    "fields": {
+        "can_delivery": true,
+        "product": 4,
+        "store": 1,
+        "url": "a",
+        "start": "2021-11-30T01:12:56Z",
+        "end": "2021-12-31T01:13:03Z",
+        "is_direct": true,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 11,
     "fields": {
         "can_delivery": false,
         "product": 4,
         "store": 2,
-        "url": "https://docs.google.com/forms/d/e/1FAIpQLScjiPLCCDOxwRyhK5hImtzH87Www__TFtndqXDwsYVD1V9Trg/viewform",
-        "start": "2021-11-09T00:00:00Z",
-        "end": "2021-11-11T00:00:00Z",
+        "url": "a",
+        "start": "2021-11-30T02:05:59Z",
+        "end": "2021-12-31T01:13:28Z",
         "is_direct": true,
         "reserve": [],
         "participate": []
@@ -216,14 +259,14 @@
 },
 {
     "model": "drawa.draw",
-    "pk": 5,
+    "pk": 12,
     "fields": {
         "can_delivery": false,
         "product": 4,
         "store": 3,
-        "url": "https://docs.google.com/forms/d/e/1FAIpQLScjiPLCCDOxwRyhK5hImtzH87Www__TFtndqXDwsYVD1V9Trg/viewform",
-        "start": "2021-11-09T00:00:00Z",
-        "end": "2021-11-11T00:04:00Z",
+        "url": "a",
+        "start": "2021-11-13T01:13:50Z",
+        "end": "2021-11-30T01:13:56Z",
         "is_direct": true,
         "reserve": [],
         "participate": []
@@ -231,14 +274,14 @@
 },
 {
     "model": "drawa.draw",
-    "pk": 6,
+    "pk": 13,
     "fields": {
         "can_delivery": true,
         "product": 4,
         "store": 4,
-        "url": "https://www.nike.com/kr/launch/t/men/fw/basketball/DJ4375-004/mslh95/air-jordan-2-retro-low-sp",
-        "start": "2021-11-12T01:00:00Z",
-        "end": "2021-11-12T01:30:00Z",
+        "url": "https://www.naver.com/",
+        "start": "2021-11-30T01:14:13Z",
+        "end": "2021-12-31T01:14:17Z",
         "is_direct": true,
         "reserve": [],
         "participate": []
@@ -246,29 +289,29 @@
 },
 {
     "model": "drawa.draw",
-    "pk": 7,
+    "pk": 14,
     "fields": {
         "can_delivery": true,
         "product": 4,
         "store": 5,
-        "url": "https://raffle.bstn.com/off-white-x-air-jordan-2-retro-low-sp-black-royal-?__cf_chl_rt_tk=TvVyog7a3_1Q7gNq4ZqVRC1ul9WRd90Cs0HZIyQKWSs-1636533788-0-gaNycGzNCNE",
-        "start": "2021-11-10T08:43:25Z",
-        "end": "2021-11-11T14:10:00Z",
-        "is_direct": false,
+        "url": "https://www.naver.com/",
+        "start": "2021-11-13T03:23:22Z",
+        "end": "2021-12-31T01:15:00Z",
+        "is_direct": true,
         "reserve": [],
         "participate": []
     }
 },
 {
     "model": "drawa.draw",
-    "pk": 8,
+    "pk": 15,
     "fields": {
         "can_delivery": true,
         "product": 4,
         "store": 6,
-        "url": "https://www.sivasdescalzo.com/en/p/air-jordan-2-retro-low-sp-x-off-white-dj4375-004",
-        "start": "2021-11-10T08:44:54Z",
-        "end": "2021-11-11T14:10:00Z",
+        "url": "https://www.naver.com/",
+        "start": "2021-11-30T01:15:35Z",
+        "end": "2021-12-31T01:15:38Z",
         "is_direct": false,
         "reserve": [],
         "participate": []
@@ -276,14 +319,44 @@
 },
 {
     "model": "drawa.draw",
-    "pk": 9,
+    "pk": 16,
     "fields": {
         "can_delivery": true,
         "product": 4,
         "store": 7,
-        "url": "https://shop.doverstreetmarket.com/collections/raffle/products/copy-of-nike-air-jordan-2-retro-low-sp-dj4375-004",
-        "start": "2021-11-10T08:46:36Z",
-        "end": "2021-11-12T08:00:00Z",
+        "url": "https://www.naver.com/",
+        "start": "2021-11-13T01:15:55Z",
+        "end": "2021-11-30T01:15:58Z",
+        "is_direct": false,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 17,
+    "fields": {
+        "can_delivery": true,
+        "product": 4,
+        "store": 8,
+        "url": "https://www.naver.com/",
+        "start": "2021-11-13T01:16:17Z",
+        "end": "2021-11-30T01:16:20Z",
+        "is_direct": true,
+        "reserve": [],
+        "participate": []
+    }
+},
+{
+    "model": "drawa.draw",
+    "pk": 18,
+    "fields": {
+        "can_delivery": false,
+        "product": 4,
+        "store": 9,
+        "url": "https://www.naver.com/",
+        "start": "2021-11-14T01:18:37Z",
+        "end": "2021-11-30T01:18:41Z",
         "is_direct": true,
         "reserve": [],
         "participate": []

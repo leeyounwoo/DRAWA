@@ -43,10 +43,12 @@ class Product(models.Model):
     wish = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='wishlist', 
-        blank=True)
+        blank=True, 
+        null=True)
 
 
 class Draw(models.Model):
+    # 국내발매: 매장만 False
     can_delivery = models.BooleanField(default=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     
@@ -54,14 +56,15 @@ class Draw(models.Model):
     url = models.TextField()
     start = models.DateTimeField()
     end = models.DateTimeField()
-
+    # 해외발매: 배대지만 False
     is_direct = models.BooleanField(default=True)
     reserve = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='reserved_draws',
-        blank=True)
+        blank=True, 
+        null=True)
     participate = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='participated_draws', 
-        blank=True
-    )
+        blank=True, 
+        null=True)
