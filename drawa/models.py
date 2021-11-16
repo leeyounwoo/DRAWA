@@ -43,7 +43,8 @@ class Product(models.Model):
     wish = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='wishlist', 
-        blank=True, null=True)
+        blank=True, 
+        null=True)
 
 
 class Draw(models.Model):
@@ -61,11 +62,9 @@ class Draw(models.Model):
         settings.AUTH_USER_MODEL,
         related_name='reserved_draws',
         blank=True, 
-        null=True
-    )
+        null=True)
     participate = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='participated_draws', 
         blank=True, 
-        null=True
-    )
+        null=True)

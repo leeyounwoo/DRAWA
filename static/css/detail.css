@@ -196,6 +196,19 @@
   transition: 0.3s;
 }
 
+/* .reserve_link {
+  width: 48%;
+} */
+
+.reserve_card_link {
+  border: 1px solid #23272b;
+  background-color: #23272b;
+  color: white;
+  transition: 0.3s;
+  padding: 0.5rem 1rem;
+  
+}
+
 .card_checkBox {
   display: inline-block;
   vertical-align: middle;
@@ -213,6 +226,11 @@
   text-align: center;
   padding: 0.5rem 1rem;
 }
+
+.reserved_draw {
+  opacity:0.3;
+}
+
 @media screen and (max-width:1220px){
   
   .page-container { 
