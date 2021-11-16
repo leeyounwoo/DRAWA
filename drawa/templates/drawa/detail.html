@@ -95,7 +95,7 @@
     <div class="releaseList-countryDiv container">
       <div class="row">
         <div class="sub-title">
-          <h4>국내 발매처<span> 총 0건</span></h4>
+          <h4>국내 발매처<span> 총 {{korea_proceeding_draws_count}}건</span></h4>
         </div>
         <div class="col-6">
           <div>
@@ -135,7 +135,7 @@
 
       <div class="row">
         <div class="sub-title">
-          <h4>해외 발매처<span>총 0건</span></h4>
+          <h4>해외 발매처<span>총 {{abroad_proceeding_draws_count}}건</span></h4>
         </div>
         <div class="col-6">
           <div>
@@ -276,5 +276,50 @@
     })
   })
 
+  const participateFormList = document.querySelectorAll('.btn-draw-participate')
+  participateFormList.forEach((participateForm) => {
+    participateForm.addEventListener('submit', (e) => {
+      e.preventDefault() // submit 이벤트 동작 방지
+      // Django 서버로 좋아요 요청
+      // POST: http://localhost:8000/articles/:pk/like/
+      // 필요한 정보 1) article.pk 
+      const drawId = e.target.dataset.drawId
+      const requestUrl = `/drawa/${drawId}/participate/`
+      
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      
+      axios.post(requestUrl, {}, { headers: {'X-CSRFToken': csrftoken} })
+        .then((response) => {
+          const participated = response.data.participated 
+          const participateBtn = document.querySelector(`#participateBtn-${drawId}`)
+          const participateStoreName = document.querySelector(`#participateStoreName-${drawId}`)
+          const drawLinkBtn = document.querySelector(`#drawLinkBtn-${drawId}`)
+
+          if (participated) {
+            console.log('add')
+            participateBtn.classList.remove('btn-outline-secondary')
+            participateBtn.classList.add('btn-dark')
+            participateStoreName.classList.add('participate_draw')
+            drawLinkBtn.classList.add('participate_draw')
+
+            
+          } else {
+            participateBtn.classList.remove('btn-dark')
+            participateBtn.classList.add('btn-outline-secondary')
+            participateStoreName.classList.remove('participate_draw')
+            drawLinkBtn.classList.remove('participate_draw')
+
+           
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            window.location.href = '/accounts/login/'
+          } else {
+            window.alert(error)
+          }
+        })
+    })
+  })
 </script>
 {% endblock %}

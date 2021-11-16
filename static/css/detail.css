@@ -206,7 +206,6 @@
   color: white;
   transition: 0.3s;
   padding: 0.5rem 1rem;
-  
 }
 
 .card_checkBox {
@@ -220,6 +219,16 @@
   margin-left: 1%;
 }
 
+.participate_card_link {
+  width: 80%;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid #d0d0d0;
+}
+
 .card_link, .card_checkBox {
   display: inline-block;
   vertical-align: middle;
@@ -231,6 +240,13 @@
   opacity:0.3;
 }
 
+.participate_draw {
+  opacity: 0.3;
+}
+
+.proceeding_btns{
+  width: 80%;
+}
 @media screen and (max-width:1220px){
   
   .page-container { 
