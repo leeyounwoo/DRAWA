@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from django.utils import timezone as tz
-from selenium import webdriver as wd 
+# from selenium import webdriver as wd 
 import time 
 
 @require_safe
@@ -142,15 +142,15 @@ def detail(request, shoes_pk):
                 abroad_not_direct_finished_draws.append(draw)
     
     # 진행중인 응모개수
-    total_proceeding_draw_count = 0
-    if proceeding_draws:
-        total_proceeding_draw_count = len(proceeding_draws)
-
-    print(product.wish.all())
+    total_proceeding_draw_count = len(proceeding_draws)
+    korea_proceeding_draws_count = len(korea_can_delivery_proceeding_draws) + len(korea_not_delivery_proceeding_draws)
+    abroad_proceeding_draws_count = len(abroad_direct_proceeding_draws) + len(abroad_not_direct_proceeding_draws)
 
     context = {
         'product': product,
         'total_proceeding_draw_count': total_proceeding_draw_count,
+        'korea_proceeding_draws_count': korea_proceeding_draws_count,
+        'abroad_proceeding_draws_count': abroad_proceeding_draws_count,
         
         'korea_can_delivery_proceeding_draws': korea_can_delivery_proceeding_draws,
         'korea_can_delivery_upcoming_draws': korea_can_delivery_upcoming_draws,
@@ -203,6 +203,24 @@ def reserve(request, draw_pk):
 
         context = {
             'reserved': reserved,
+        }
+        return JsonResponse(context)
+    return HttpResponse(status=401)
+
+
+@require_POST
+def participate(request, draw_pk):
+    if request.user.is_authenticated:
+        draw = get_object_or_404(Draw, pk=draw_pk)
+        if draw.participate.filter(pk=request.user.pk).exists():
+            draw.participate.remove(request.user)
+            participated = False
+        else:
+            draw.participate.add(request.user)
+            participated = True
+
+        context = {
+            'participated': participated,
         }
         return JsonResponse(context)
     return HttpResponse(status=401)
