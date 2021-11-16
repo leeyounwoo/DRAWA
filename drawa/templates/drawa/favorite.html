@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load filters %}
+
 {% block content %}
 
 <section class="container">
@@ -35,36 +37,37 @@
           </ul>
         </div>
       </div>
+      <div class="my-3">
+        <h3>덤프</h3>
+        <div class="row flex-nowrap overflow-auto card" style="height: 200px;">
+          <ul id="brand-check-list" style="list-style: none; padding-left: 0px;">
+            <li>덤프</li>
+            <li>덤프</li>
+            <li>덤프</li>
+            <li>덤프</li>
+            <li>덤프</li>
+            <li>덤프</li>
+            <li>덤프</li>
+            <li>덤프</li>
+            <li>덤프</li>
+          </ul>
+        </div>
+      </div>
+
+      <p>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Button with data-bs-target
+        </button>
+      </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+          Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+        </div>
+      </div>
+
     </div>
     <div class="col-10">
-      <div class="row row-cols-4">
-        <div class="col-3">
-          {% include 'drawa/now_card.html' %}
-        </div>
-        <div class="col-3">
-          {% include 'drawa/now_card.html' %}
-        </div>
-        <div class="col-3">
-          {% include 'drawa/now_card.html' %}
-        </div>
-        <div class="col-3">
-          {% include 'drawa/now_card.html' %}
-        </div>
-        <div class="col-3">
-          {% include 'drawa/now_card.html' %}
-        </div>
-        <div class="col-3">
-          {% include 'drawa/now_card.html' %}
-        </div>
-        <div class="col-3">
-          {% include 'drawa/now_card.html' %}
-        </div>
-        <div class="col-3">
-          {% include 'drawa/now_card.html' %}
-        </div>
-        <div class="col-3">
-          {% include 'drawa/now_card.html' %}
-        </div>
+      <div class="row row-cols-4" id="favorite-list">
       </div>
     </div>
   </div>
@@ -76,6 +79,28 @@
 
 <script>
 
+  // 필터 내용 받아올 변수
+  // product의 brand
+  const brands = []
+  // product의 colleciton
+  const collections = []
+
+  // 전체 제품을 담는 코드
+  let nowTime = new Date()
+
+  let favoriteProduct
+  const favoriteProductList = document.querySelector(`#favorite-list`)
+  let favoriteProductTimeSpan
+  let favoriteProductCounter = 0
+  {% for product in products %}
+    if ('{{ product.brand }}' )
+    favoriteProduct = document.createElement('div')
+    favoriteProduct.classList.add(`col-3`)
+    favoriteProduct.innerHTML = `{% include 'drawa/now_card.html' %}`
+    favoriteProductList.appendChild(favoriteProduct)
+  {% endfor %}
+
+  // 브랜드를 보여주는 코드
   const length = 12
   const brandList = document.querySelector('#brand-list')
   for (i = 0; i < length; i++) {
@@ -85,9 +110,9 @@
     brandList.appendChild(brand)
   }
   
+  // 필터들을 보여주는 코드
   const checkNum = 3
   const brandCheckList = document.querySelector('#brand-check-list')
-  console.log(brandCheckList)
   for (i = 0; i < checkNum; i++) {
     const list = document.createElement('li')
     list.innerHTML = `
@@ -117,6 +142,51 @@
     `
     brandCheckList.appendChild(list)
   }
+
+  // 각 product별로 관심상품 이벤트 반응함수를 등록하는 코드
+  const interestingFormList = document.querySelectorAll('.index-interesting-form')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  interestingFormList.forEach(interestingForm => {
+    
+    interestingForm.addEventListener('submit', e => {
+      
+      e.preventDefault()
+
+      const productId = e.target.dataset.productId
+
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/drawa/${productId}/interesting/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+        .then(res => {
+          const interested = res.data.interested
+          const interestingBtn = document.querySelector(`#interesting-btn-${productId}`)
+          const fillBookmarkHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+            <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+          </svg>
+          `
+          const emptyBookmarkHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-bookmark" viewBox="0 0 16 16">
+            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+          </svg>
+          `
+
+          if (interested) {
+            interestingBtn.innerHTML = fillBookmarkHTML
+          } else {
+            interestingBtn.innerHTML = emptyBookmarkHTML
+          }
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+    })
+  })
 
 </script>
 

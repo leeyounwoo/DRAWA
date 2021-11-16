@@ -1,3 +1,18 @@
+{% comment %} <div class="col">
+  <div class="card">
+    <img src="{{ product.image_url }}" class="card-img-top" alt="...">
+    <div class="card-img-overlay">
+      <p class="time_count_upcoming">
+        <span></span>
+      </p>
+    </div>
+    <div class="card-body my-0 text-center">
+      <h5 class="card-title">{{ product.name_kor }}</h5>
+      <p class="text-success">응모 가능</p>
+    </div>
+  </div>
+</div> {% endcomment %}
+
 {% load filters %}
 
 <div id="test" class="col product_item w-100">
@@ -28,8 +43,7 @@
       </form>
       
       <!--   font-size: 25px;  color: red;  position: absolute;  top: 10px;  left: 0;  margin: 0; -->
-      <span class="time_count_now" data-type="1" data-start-time="1635123600000" data-end-time="1635125400000">
-        {% comment %} <span>00:26:23</span> {% endcomment %}
+      <span class="time_count_future" data-type="1" data-start-time="1635123600000" data-end-time="1635125400000">        
         <span></span>
       </span>
     </div>

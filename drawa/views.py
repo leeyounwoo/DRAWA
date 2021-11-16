@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Draw, Product, Store
 from datetime import datetime
 from pytz import timezone
+from django.http import JsonResponse
 
 @require_safe
 def index(request):
@@ -112,47 +113,56 @@ def detail(request, shoes_pk):
 #     return render(request, 'drawa/place.html', context)
 
 
-# @require_POST
-# def shoes_reservation(request, shoes_pk):
-#     if not request.user.is_authenticated:
-#         return redirect('accounts:login')
+@require_POST
+def shoes_reservation(request, shoes_pk):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
     
-#     shoes = get_object_or_404(Product, pk=shoes_pk)
-#     draw = shoes.draw_set.all()
+    shoes = get_object_or_404(Product, pk=shoes_pk)
+    draw = shoes.draw_set.all()
 
-#     # 이미 예약 해놨다면 -> 취소
-#     if draw.reservation.filter(pk=request.user.pk).exists():
-#         draw.reservation.remove(request.user)
-#     # 예약
-#     else:
-#         draw.reservation.add(request.user)
+    # 이미 예약 해놨다면 -> 취소
+    if draw.reservation.filter(pk=request.user.pk).exists():
+        draw.reservation.remove(request.user)
+    # 예약
+    else:
+        draw.reservation.add(request.user)
     
-#     return redirect('drawa:shoes_detail')
+    return redirect('drawa:shoes_detail')
 
 
-# @require_POST
-# def interesting(request, shoes_pk):
-#     if not request.user.is_authenticated:
-#         return redirect('accounts:login')
+@require_POST
+def interesting(request, shoes_pk):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
     
-#     shoes = get_object_or_404(Product, pk=shoes_pk)
+    shoes = get_object_or_404(Product, pk=shoes_pk)
 
-#     # 이미 관심 등록 해놨다면 -> 취소
-#     if shoes.wishlist.filter(pk=request.user.pk).exists():
-#         shoes.wishlist.remove(request.user)
-#     # 관심 등록
-#     else:
-#         shoes.wishlist.add(request.user)
+    # 이미 관심 등록 해놨다면 -> 취소
+    if shoes.wish.filter(pk=request.user.pk).exists():
+        shoes.wish.remove(request.user)
+        interested = False
+    # 관심 등록
+    else:
+        shoes.wish.add(request.user)
+        interested = True
+    
+    # JsonResponse를 통해 응답
+    context = {
+        'interested': interested,
+    }
+    return JsonResponse(context)
     
     # 그 전에 있던 페이지로 이동
-    return redirect('drawa:shoes_detail')
+    # return redirect('drawa:shoes_detail')
     # return redirect('drawa:index')
 
 
 
 def favorite(request):
+    products = Product.objects.all()
     context = {
-        
+        'products': products,        
     }
     return render(request, 'drawa/favorite.html', context)
 

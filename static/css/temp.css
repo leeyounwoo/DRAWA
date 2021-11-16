@@ -27,8 +27,8 @@
 }
 .btn_wish{
   position: absolute;
-  top: 7px;
-  right: 7px;
+  top: -7px;
+  right: -7px;
   padding: 5px;
 }
 .time_count_now{
