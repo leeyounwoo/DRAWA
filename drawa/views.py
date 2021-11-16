@@ -204,8 +204,11 @@ def reserve(request, draw_pk):
         context = {
             'reserved': reserved,
         }
+
         return JsonResponse(context)
     return HttpResponse(status=401)
+
+
 # @login_required
 # @require_safe
 # def place(request):
@@ -444,4 +447,9 @@ def info(request):
                 is_direct = direct,
             ).save()
             driver.find_element_by_xpath('/html/body/div[2]/div[4]/div/button[2]').click() # X버튼
+    return redirect('drawa:index')
+
+
+def mail(request):
+    print('dd')
     return redirect('drawa:index')
