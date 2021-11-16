@@ -9,7 +9,7 @@
 
 
   <div class="navbar-whole">
-    
+    <a href="{% url 'drawa:info' %}">정보 추가</a>
       {% comment %} 로그인창 {% endcomment %}
       {% if request.user.is_authenticated %} 
       <ul class="navbar_log">

@@ -1,0 +1,59 @@
+{% comment %} <div class="col">
+  <div class="card">
+    <img src="{{ product.image_url }}" class="card-img-top" alt="...">
+    <div class="card-img-overlay">
+      <p class="time_count_upcoming">
+        <span></span>
+      </p>
+    </div>
+    <div class="card-body my-0 text-center">
+      <h5 class="card-title">{{ product.name_kor }}</h5>
+      <p class="text-success">응모 가능</p>
+    </div>
+  </div>
+</div> {% endcomment %}
+
+{% load filters %}
+
+<div id="test" class="col product_item w-100">
+  <!-- 제품 상세 페이지로 이동 -->
+  <a href="" class="item_inner link-dark">
+    <!-- position: relative; -->
+    <div class="thumb_box">
+      <div style="background-color: rgb(244, 244, 244);">
+        <img src="{{ product.image_url }}" class="card-img-top" alt="...">
+        
+      </div>
+      <!-- position: absolute;  top: 7px;  right: 5px;  padding: 5px; -->
+      <form class="btn_wish index-interesting-form" data-product-id="{{ product.pk }}" method="POST">
+        {% csrf_token %}
+        {% if product in user.wishlist.all %}
+          <button id="interesting-btn-{{ product.pk }}" class="btn btn-link text-dark" style="box-shadow: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+              <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+            </svg>
+          </button>
+        {% else %}
+          <button id="interesting-btn-{{ product.pk }}" class="btn btn-link text-dark" style="box-shadow: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-bookmark" viewBox="0 0 16 16">
+              <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+            </svg>
+          </button>
+        {% endif %}
+      </form>
+      
+      <!--   font-size: 25px;  color: red;  position: absolute;  top: 10px;  left: 0;  margin: 0; -->
+      <span class="time_count_future" data-type="1" data-start-time="1635123600000" data-end-time="1635125400000">        
+        <span></span>
+      </span>
+    </div>
+    <div class="info_box">
+      <div class="brand">
+        <h5 class="card-title brand_text">{{ product.brand }}</h5>
+      </div>
+      <div class="name">
+        <p class="card-text">{{ product.name_kor }}</p>
+      </div>
+    </div>
+  </a>
+</div>
