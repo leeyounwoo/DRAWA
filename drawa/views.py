@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from django.contrib.auth.decorators import login_required
 from .models import Draw, Product, Store
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone
 from django.http import JsonResponse, HttpResponse
 from bs4 import BeautifulSoup
@@ -33,6 +33,14 @@ def index(request):
             now_draws[draw.product.pk] = draw.end
 
     now_products = list(set(now_products)) # 중복제거
+    now_products.sort(key=lambda x: now_draws[x.pk]) # 시간순 정렬
+    # 터무니없는 항목 제거
+    limit_time = now_time + timedelta(weeks=520) # 10년 안에 드로우가 안끝나면 거짓 정보로 판단
+    while len(now_products) > 0:
+        if now_draws[now_products[-1].pk] > limit_time:
+            now_products.pop()
+        else:
+            break
 
     # 진행 예정 드로우
     upcoming_products = []
@@ -46,6 +54,7 @@ def index(request):
             upcoming_draws[draw.product.pk] = draw.start # end? start?
 
     upcoming_products = list(set(upcoming_products))
+    upcoming_products.sort(key=lambda x: upcoming_draws[x.pk])
 
     # print(now_products)
     # print(upcoming_products)
