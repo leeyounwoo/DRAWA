@@ -90,13 +90,17 @@ def detail(request, shoes_pk):
     finished_draws = product.draw_set.filter(end__lte=now_time)
 
     # 진행중
+    # 국내배송:     can_delivery: True             is_direct: True    
+    # 국내매장:     can_delivery: True             is_direct: False
+    # 해외직배송:   can_delivery: False            is_direct: True
+    # 배대지:      can_delivery: False            is_direct: False
     korea_can_delivery_proceeding_draws = []
     korea_not_delivery_proceeding_draws = []
     abroad_direct_proceeding_draws = []
     abroad_not_direct_proceeding_draws = []
     for draw in proceeding_draws:
-        if draw.store.nation == 'Korea':
-            if draw.can_delivery == True:
+        if draw.can_delivery == True:
+            if draw.is_direct == True:
                 # print('국내_온라인', draw)
                 korea_can_delivery_proceeding_draws.append(draw)
             else:               
@@ -116,8 +120,8 @@ def detail(request, shoes_pk):
     abroad_direct_upcoming_draws = []
     abroad_not_direct_upcoming_draws = []
     for draw in upcoming_draws:
-        if draw.store.nation == 'Korea':
-            if draw.can_delivery == True:
+        if draw.can_delivery == True:
+            if draw.is_direct:
                 # print('국내_온라인', draw)
                 korea_can_delivery_upcoming_draws.append(draw)
             else:               
@@ -137,8 +141,8 @@ def detail(request, shoes_pk):
     abroad_direct_finished_draws = []
     abroad_not_direct_finished_draws = []
     for draw in finished_draws:
-        if draw.store.nation == 'Korea':
-            if draw.can_delivery == True:
+        if draw.can_delivery == True:
+            if draw.is_direct:
                 # print('국내_온라인', draw)
                 korea_can_delivery_finished_draws.append(draw)
             else:               

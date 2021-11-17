@@ -20,10 +20,11 @@
   <a href="" class="item_inner link-dark">
     <!-- position: relative; -->
     <div class="thumb_box">
+    <a href="{% url 'drawa:detail' product.pk %}">
       <div style="background-color: rgb(244, 244, 244);">
         <img src="{{ product.image_url }}" class="card-img-top" alt="...">
-        
       </div>
+    </a>
       <!-- position: absolute;  top: 7px;  right: 5px;  padding: 5px; -->
       <form class="btn_wish index-interesting-form" data-product-id="{{ product.pk }}" method="POST">
         {% csrf_token %}
