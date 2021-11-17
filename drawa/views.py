@@ -2,14 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from django.contrib.auth.decorators import login_required
 from .models import Draw, Product, Store
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone
 from django.http import JsonResponse, HttpResponse
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from django.utils import timezone as tz
-from selenium import webdriver as wd 
+# from selenium import webdriver as wd 
 import time 
+from django.core.mail import EmailMessage
+from rest_framework import status
+from rest_framework.response import Response
 
 @require_safe
 def index(request):
@@ -33,6 +36,14 @@ def index(request):
             now_draws[draw.product.pk] = draw.end
 
     now_products = list(set(now_products)) # 중복제거
+    now_products.sort(key=lambda x: now_draws[x.pk]) # 시간순 정렬
+    # 터무니없는 항목 제거
+    limit_time = now_time + timedelta(weeks=520) # 10년 안에 드로우가 안끝나면 거짓 정보로 판단
+    while len(now_products) > 0:
+        if now_draws[now_products[-1].pk] > limit_time:
+            now_products.pop()
+        else:
+            break
 
     # 진행 예정 드로우
     upcoming_products = []
@@ -46,6 +57,7 @@ def index(request):
             upcoming_draws[draw.product.pk] = draw.start # end? start?
 
     upcoming_products = list(set(upcoming_products))
+    upcoming_products.sort(key=lambda x: upcoming_draws[x.pk])
 
     # print(now_products)
     # print(upcoming_products)
@@ -142,15 +154,15 @@ def detail(request, shoes_pk):
                 abroad_not_direct_finished_draws.append(draw)
     
     # 진행중인 응모개수
-    total_proceeding_draw_count = 0
-    if proceeding_draws:
-        total_proceeding_draw_count = len(proceeding_draws)
-
-    print(product.wish.all())
+    total_proceeding_draw_count = len(proceeding_draws)
+    korea_proceeding_draws_count = len(korea_can_delivery_proceeding_draws) + len(korea_not_delivery_proceeding_draws)
+    abroad_proceeding_draws_count = len(abroad_direct_proceeding_draws) + len(abroad_not_direct_proceeding_draws)
 
     context = {
         'product': product,
         'total_proceeding_draw_count': total_proceeding_draw_count,
+        'korea_proceeding_draws_count': korea_proceeding_draws_count,
+        'abroad_proceeding_draws_count': abroad_proceeding_draws_count,
         
         'korea_can_delivery_proceeding_draws': korea_can_delivery_proceeding_draws,
         'korea_can_delivery_upcoming_draws': korea_can_delivery_upcoming_draws,
@@ -205,6 +217,24 @@ def reserve(request, draw_pk):
             'reserved': reserved,
         }
 
+        return JsonResponse(context)
+    return HttpResponse(status=401)
+
+
+@require_POST
+def participate(request, draw_pk):
+    if request.user.is_authenticated:
+        draw = get_object_or_404(Draw, pk=draw_pk)
+        if draw.participate.filter(pk=request.user.pk).exists():
+            draw.participate.remove(request.user)
+            participated = False
+        else:
+            draw.participate.add(request.user)
+            participated = True
+
+        context = {
+            'participated': participated,
+        }
         return JsonResponse(context)
     return HttpResponse(status=401)
 
@@ -450,6 +480,20 @@ def info(request):
     return redirect('drawa:index')
 
 
-def mail(request):
-    print('dd')
+def mail(request, draw_pk):
+    draw = get_object_or_404(Draw, pk=draw_pk)
+
+    email = request.user.email
+    if email is not None:
+        subject = f'[드로와] { request.user.first_name }님의 드로우가 시작되었습니다!'
+        message = f'''
+            { request.user.first_name }님의 드로우가 시작되었습니다!
+
+            👟 드로우 정보
+            제품 : {draw.product.name_kor}
+            응모 바로가기 ▶ {draw.url}
+        '''
+        mail = EmailMessage(subject, message, to=[email])
+        mail.send()
+    
     return redirect('drawa:index')

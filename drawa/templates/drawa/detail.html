@@ -236,16 +236,55 @@
 
       // product 시간
       let nowTime = new Date()
-      console.log('time: ', nowTime)
+      console.log('nowTime', nowTime)
 
-      const drawEnd = new Date(e.target.dataset.drawEnd)
-      console.log('time2: ', drawEnd)
+      const drawStart = e.target.dataset.drawStart
+      
       // YYYY-MM-DD hh:mm:ss 형식으로 변환
-      // console.log(`${drawEnd.slice(0, 4)}-${drawEnd.slice(0, 4)}-${} ${}:${}:00`)
+      // month
+      let monEnd = -1
+      let mon = ''
+      if (drawStart[7] != '월') {
+        mon = drawStart.slice(6, 8)
+        monEnd = 8
+      } else {
+        mon = '0' + drawStart[6]
+        monEnd = 7
+      }
+      // day
+      let dayEnd = -1
+      let day = ''
+      if (drawStart[monEnd+3] != '일') {
+        day = drawStart.slice(monEnd+2, monEnd+4)
+        dayEnd = monEnd+4
+      } else {
+        day = '0' + drawStart[monEnd+2]
+        dayEnd = monEnd+3
+      }
+      // hour
+      let hourEnd = -1
+      let hour = ''
+      if (drawStart[dayEnd+3] != ':') {
+        hour = drawStart.slice(dayEnd+2, dayEnd+4)
+        hourEnd = dayEnd+4
+      } else {
+        hour = '0' + drawStart[dayEnd+2]
+        hourEnd = dayEnd+3
+      }
+      // min
+      let min = ''
+      if (drawStart[hourEnd+3] != '오') {
+        min = drawStart.slice(hourEnd+1, hourEnd+3)
+      } else {
+        min = '0' + drawStart[hourEnd+1]
+      }
 
-      let endTime = new Date(drawEnd)
-      console.log('time3: ', endTime)
-      let timeLeft = new Date(endTime - nowTime)
+      const startText = `${drawStart.slice(0, 4)}-${mon}-${day} ${hour}:${min}:00`
+      
+      let startTime = new Date(startText)
+      console.log('startTime', startTime)
+      let timeLeft = startTime.getTime() - nowTime.getTime()
+      console.log('timeLeft', timeLeft)
 
       // Django 서버로 좋아요 요청
       // POST: http://localhost:8000/articles/:pk/like/
@@ -274,9 +313,9 @@
             </svg>
             `
             // setTimeout 이벤트 생성
-            //timer = setTimeout(function() {
-//              window.location.href = '/drawa/mail/'
-//            })
+            timer = setTimeout(function() {
+              window.location.href = `/drawa/${ drawId }/mail/`
+            }, timeLeft)
           } else {
             reserveBtn.classList.remove('reserved_draw')
             reserveBell.innerHTML = `
@@ -285,6 +324,9 @@
             </svg>
             `
             // setTimeout 이벤트 해제
+            if (timer) {
+              clearTimeout(timer)
+            }
           }
         })
         .catch((error) => {
