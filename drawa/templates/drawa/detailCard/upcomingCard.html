@@ -44,7 +44,7 @@
               </div>
             </span>
           </a> {% endcomment %}
-          <form data-draw-id="{{ draw.pk }}" class="btn-draw-reserve" method="POST" >
+          <form data-draw-id="{{ draw.pk }}" data-draw-start="{{ draw.start }}" class="btn-draw-reserve" method="POST" >
             {% csrf_token %}
             {% if user in draw.reserve.all %}
               <button id="reserveBtn-{{ draw.pk }}" class="btn reserved_draw">
@@ -53,7 +53,7 @@
                 </div>
               </button>
             {% else %}
-              <button id="reserveBtn-{{ draw.pk }}" class="btn">
+              <button id="reserveBtn-{{ draw.pk }}" data-draw-start="{{ draw.start }}" class="btn">
                 <div class="reserve_card_link" style="cursor:pointer;" >
                   <span class="direct-link-text">응모예약</span>
                 </div>

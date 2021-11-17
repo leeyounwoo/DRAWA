@@ -6,7 +6,7 @@
 
 <div class="container">
 
-  <h1 class="text-center">Draw Calandar</h1>
+  <h1 class="text-center">Draw Schedule</h1>
 
   <div class="row">
 
@@ -74,6 +74,17 @@
     return timeText
   }
 
+  // 1초 지나게 하는 함수
+  function goSecond() {
+    const nowProductTimeSpanList = document.querySelectorAll('.time_count_now span')
+    nowProductTimeSpanList.forEach((timeSpan) => {
+      let time = timeSpan.dataset.time
+      time = time - 1000
+      timeSpan.dataset.time = time
+      timeSpan.innerText = getTimeLeft(time, 0)
+    })
+  }
+
   // now_products를 위한 carousel 구조화하는 코드
   const carouselIndicator = document.querySelector("#carouselNowProductList .carousel-indicators")
   const length = "{{ now_products|length }}"
@@ -82,6 +93,7 @@
 
   const carouselNum = parseInt((length-1)/productPerSlide+1)
 
+  {% comment %}
   for (let i = 0; i < carouselNum; i++) {
     if (i === 0) {
       const btn = document.createElement('button')
@@ -110,6 +122,7 @@
       carouselIndicator.appendChild(btn)
     }
   }
+  {% endcomment %}
 
   // carousel안에 now_products를 넣는 코드
   const carouselInner = document.querySelector('#carouselNowProductList .carousel-inner')
@@ -172,10 +185,13 @@
 
     nowProductTimeSpan = nowProduct.querySelector('.time_count_now span')
     endTime = new Date('{{ now_draws|dictionary:product.pk|safe }}')
+    setAttribute(nowProductTimeSpan, 'data-time', endTime - nowTime)
     nowProductTimeSpan.innerText = getTimeLeft(endTime, nowTime)
 
     nowProductCounter += 1
   {% endfor %}
+
+  setInterval(goSecond, 1000)
   
   let upcomingProduct
   const upcomingProductList = document.querySelector('#upcoming-product-list')

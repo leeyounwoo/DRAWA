@@ -233,6 +233,59 @@
     reserveForm.addEventListener('submit', (e) => {
       console.log('a')
       e.preventDefault() // submit 이벤트 동작 방지
+
+      // product 시간
+      let nowTime = new Date()
+      console.log('nowTime', nowTime)
+
+      const drawStart = e.target.dataset.drawStart
+      
+      // YYYY-MM-DD hh:mm:ss 형식으로 변환
+      // month
+      let monEnd = -1
+      let mon = ''
+      if (drawStart[7] != '월') {
+        mon = drawStart.slice(6, 8)
+        monEnd = 8
+      } else {
+        mon = '0' + drawStart[6]
+        monEnd = 7
+      }
+      // day
+      let dayEnd = -1
+      let day = ''
+      if (drawStart[monEnd+3] != '일') {
+        day = drawStart.slice(monEnd+2, monEnd+4)
+        dayEnd = monEnd+4
+      } else {
+        day = '0' + drawStart[monEnd+2]
+        dayEnd = monEnd+3
+      }
+      // hour
+      let hourEnd = -1
+      let hour = ''
+      if (drawStart[dayEnd+3] != ':') {
+        hour = drawStart.slice(dayEnd+2, dayEnd+4)
+        hourEnd = dayEnd+4
+      } else {
+        hour = '0' + drawStart[dayEnd+2]
+        hourEnd = dayEnd+3
+      }
+      // min
+      let min = ''
+      if (drawStart[hourEnd+3] != '오') {
+        min = drawStart.slice(hourEnd+1, hourEnd+3)
+      } else {
+        min = '0' + drawStart[hourEnd+1]
+      }
+
+      const startText = `${drawStart.slice(0, 4)}-${mon}-${day} ${hour}:${min}:00`
+      
+      let startTime = new Date(startText)
+      console.log('startTime', startTime)
+      let timeLeft = startTime.getTime() - nowTime.getTime()
+      console.log('timeLeft', timeLeft)
+
       // Django 서버로 좋아요 요청
       // POST: http://localhost:8000/articles/:pk/like/
       // 필요한 정보 1) article.pk 
@@ -249,6 +302,8 @@
           const reserveBtn = document.querySelector(`#reserveBtn-${drawId}`)
           const reserveBell = document.querySelector(`#reserveBell-${drawId}`)
 
+          let timer = null
+
           if (reserved) {
             console.log('add')
             reserveBtn.classList.add('reserved_draw')
@@ -257,6 +312,10 @@
               <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
             </svg>
             `
+            // setTimeout 이벤트 생성
+            timer = setTimeout(function() {
+              window.location.href = `/drawa/${ drawId }/mail/`
+            }, timeLeft)
           } else {
             reserveBtn.classList.remove('reserved_draw')
             reserveBell.innerHTML = `
@@ -264,6 +323,10 @@
               <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
             </svg>
             `
+            // setTimeout 이벤트 해제
+            if (timer) {
+              clearTimeout(timer)
+            }
           }
         })
         .catch((error) => {
