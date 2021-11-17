@@ -2,13 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from django.contrib.auth.decorators import login_required
 from .models import Draw, Product, Store
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone
+from django.http import JsonResponse, HttpResponse
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from django.utils import timezone as tz
-from selenium import webdriver as wd 
+# from selenium import webdriver as wd 
 import time 
+from django.core.mail import EmailMessage
+from rest_framework import status
+from rest_framework.response import Response
 
 @require_safe
 def index(request):
@@ -32,6 +36,14 @@ def index(request):
             now_draws[draw.product.pk] = draw.end
 
     now_products = list(set(now_products)) # 중복제거
+    now_products.sort(key=lambda x: now_draws[x.pk]) # 시간순 정렬
+    # 터무니없는 항목 제거
+    limit_time = now_time + timedelta(weeks=520) # 10년 안에 드로우가 안끝나면 거짓 정보로 판단
+    while len(now_products) > 0:
+        if now_draws[now_products[-1].pk] > limit_time:
+            now_products.pop()
+        else:
+            break
 
     # 진행 예정 드로우
     upcoming_products = []
@@ -45,6 +57,7 @@ def index(request):
             upcoming_draws[draw.product.pk] = draw.start # end? start?
 
     upcoming_products = list(set(upcoming_products))
+    upcoming_products.sort(key=lambda x: upcoming_draws[x.pk])
 
     # print(now_products)
     # print(upcoming_products)
@@ -65,45 +78,164 @@ def index(request):
 @require_safe
 def detail(request, shoes_pk):
     product = get_object_or_404(Product, pk=shoes_pk)
+    # 현재시간
+    now_time = datetime.now(timezone('Asia/Seoul'))
 
-    draws = product.draw_set.all()
+    # 드로우 정보 가져오기
+    # 진행중: 시작시간 <= 현재 시간 <= 종료시간
+    proceeding_draws = product.draw_set.filter(start__lte=now_time, end__gte=now_time)
+    # 진행예정: 시작시간 > 현재 시간
+    upcoming_draws = product.draw_set.filter(start__gt=now_time)
+    # 종료: 종료시간 < 현재 시간
+    finished_draws = product.draw_set.filter(end__lte=now_time)
 
-    # 1번째 방법: filter 사용
-    # temp = draws.filter(can_delivery = True) # ==> (속성) 가능
-    # temp = draws.filter(store__nation='korea') # ==> (외래키.속성) 불가능
-    # print(temp)
-
-    # 2번째 방법: for문 + 쿼리셋 합치기
-    korea_can_delivery = []
-    korea_not_delivery = []
-    abroad_direct = []
-    abroad_not_direct = []
-    for draw in draws:
-        if draw.store.nation == 'korea':
+    # 진행중
+    korea_can_delivery_proceeding_draws = []
+    korea_not_delivery_proceeding_draws = []
+    abroad_direct_proceeding_draws = []
+    abroad_not_direct_proceeding_draws = []
+    for draw in proceeding_draws:
+        if draw.store.nation == 'Korea':
             if draw.can_delivery == True:
-                print('국내_온라인', draw)
-                korea_can_delivery.append(draw)
+                # print('국내_온라인', draw)
+                korea_can_delivery_proceeding_draws.append(draw)
             else:               
-                print('국내_오프라인', draw)
-                korea_not_delivery.append(draw)
+                # print('국내_오프라인', draw)
+                korea_not_delivery_proceeding_draws.append(draw)
         else:
             if draw.is_direct:
-                print('직배송', draw)
-                abroad_direct.append(draw)
+                # print('직배송', draw)
+                abroad_direct_proceeding_draws.append(draw)
             else:
-                print('직배송 X', draw)
-                abroad_not_direct.append(draw)
+                # print('직배송 X', draw)
+                abroad_not_direct_proceeding_draws.append(draw)
 
+    # 진행예정
+    korea_can_delivery_upcoming_draws = []
+    korea_not_delivery_upcoming_draws = []
+    abroad_direct_upcoming_draws = []
+    abroad_not_direct_upcoming_draws = []
+    for draw in upcoming_draws:
+        if draw.store.nation == 'Korea':
+            if draw.can_delivery == True:
+                # print('국내_온라인', draw)
+                korea_can_delivery_upcoming_draws.append(draw)
+            else:               
+                # print('국내_오프라인', draw)
+                korea_not_delivery_upcoming_draws.append(draw)
+        else:
+            if draw.is_direct:
+                # print('직배송', draw)
+                abroad_direct_upcoming_draws.append(draw)
+            else:
+                # print('직배송 X', draw)
+                abroad_not_direct_upcoming_draws.append(draw)
 
+    # 종료
+    korea_can_delivery_finished_draws = []
+    korea_not_delivery_finished_draws = []
+    abroad_direct_finished_draws = []
+    abroad_not_direct_finished_draws = []
+    for draw in finished_draws:
+        if draw.store.nation == 'Korea':
+            if draw.can_delivery == True:
+                # print('국내_온라인', draw)
+                korea_can_delivery_finished_draws.append(draw)
+            else:               
+                # print('국내_오프라인', draw)
+                korea_not_delivery_finished_draws.append(draw)
+        else:
+            if draw.is_direct:
+                # print('직배송', draw)
+                abroad_direct_finished_draws.append(draw)
+            else:
+                # print('직배송 X', draw)
+                abroad_not_direct_finished_draws.append(draw)
+    
+    # 진행중인 응모개수
+    total_proceeding_draw_count = len(proceeding_draws)
+    korea_proceeding_draws_count = len(korea_can_delivery_proceeding_draws) + len(korea_not_delivery_proceeding_draws)
+    abroad_proceeding_draws_count = len(abroad_direct_proceeding_draws) + len(abroad_not_direct_proceeding_draws)
 
     context = {
         'product': product,
-        'korea_can_delivery': korea_can_delivery,
-        'korea_not_delivery': korea_not_delivery,
-        'abroad_direct': abroad_direct,
-        'abroad_not_direct': abroad_not_direct,
+        'total_proceeding_draw_count': total_proceeding_draw_count,
+        'korea_proceeding_draws_count': korea_proceeding_draws_count,
+        'abroad_proceeding_draws_count': abroad_proceeding_draws_count,
+
+        'korea_can_delivery_proceeding_draws': korea_can_delivery_proceeding_draws,
+        'korea_can_delivery_upcoming_draws': korea_can_delivery_upcoming_draws,
+        'korea_can_delivery_finished_draws': korea_can_delivery_finished_draws,
+        
+        'korea_not_delivery_proceeding_draws': korea_not_delivery_proceeding_draws,
+        'korea_not_delivery_upcoming_draws': korea_not_delivery_upcoming_draws,
+        'korea_not_delivery_finished_draws': korea_not_delivery_finished_draws,
+        
+        'abroad_direct_proceeding_draws': abroad_direct_proceeding_draws,
+        'abroad_direct_upcoming_draws': abroad_direct_upcoming_draws,
+        'abroad_direct_finished_draws': abroad_direct_finished_draws,
+        
+        'abroad_not_direct_proceeding_draws': abroad_not_direct_proceeding_draws,
+        'abroad_not_direct_upcoming_draws': abroad_not_direct_upcoming_draws,
+        'abroad_not_direct_finished_draws': abroad_not_direct_finished_draws,       
     }
     return render(request, 'drawa/detail.html', context)
+
+
+@require_POST
+def wish(request, product_pk):
+    if request.user.is_authenticated:
+        product = get_object_or_404(Product, pk=product_pk)
+        if product.wish.filter(pk=request.user.pk).exists():
+            product.wish.remove(request.user)
+            wished = False
+        else:
+            product.wish.add(request.user)
+            wished = True 
+        
+        context = {
+            'wished': wished,
+            'wish_count':product.wish.count()
+        }
+        return JsonResponse(context)        
+    return HttpResponse(status=401)
+
+
+@require_POST
+def reserve(request, draw_pk):
+    if request.user.is_authenticated:
+        draw = get_object_or_404(Draw, pk=draw_pk)
+        if draw.reserve.filter(pk=request.user.pk).exists():
+            draw.reserve.remove(request.user)
+            reserved = False
+        else:
+            draw.reserve.add(request.user)
+            reserved = True
+
+        context = {
+            'reserved': reserved,
+        }
+
+        return JsonResponse(context)
+    return HttpResponse(status=401)
+
+
+@require_POST
+def participate(request, draw_pk):
+    if request.user.is_authenticated:
+        draw = get_object_or_404(Draw, pk=draw_pk)
+        if draw.participate.filter(pk=request.user.pk).exists():
+            draw.participate.remove(request.user)
+            participated = False
+        else:
+            draw.participate.add(request.user)
+            participated = True
+
+        context = {
+            'participated': participated,
+        }
+        return JsonResponse(context)
+    return HttpResponse(status=401)
 
 
 # @login_required
@@ -117,47 +249,56 @@ def detail(request, shoes_pk):
 #     return render(request, 'drawa/place.html', context)
 
 
-# @require_POST
-# def shoes_reservation(request, shoes_pk):
-#     if not request.user.is_authenticated:
-#         return redirect('accounts:login')
+@require_POST
+def shoes_reservation(request, shoes_pk):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
     
-#     shoes = get_object_or_404(Product, pk=shoes_pk)
-#     draw = shoes.draw_set.all()
+    shoes = get_object_or_404(Product, pk=shoes_pk)
+    draw = shoes.draw_set.all()
 
-#     # 이미 예약 해놨다면 -> 취소
-#     if draw.reservation.filter(pk=request.user.pk).exists():
-#         draw.reservation.remove(request.user)
-#     # 예약
-#     else:
-#         draw.reservation.add(request.user)
+    # 이미 예약 해놨다면 -> 취소
+    if draw.reservation.filter(pk=request.user.pk).exists():
+        draw.reservation.remove(request.user)
+    # 예약
+    else:
+        draw.reservation.add(request.user)
     
-#     return redirect('drawa:shoes_detail')
+    return redirect('drawa:shoes_detail')
 
 
-# @require_POST
-# def interesting(request, shoes_pk):
-#     if not request.user.is_authenticated:
-#         return redirect('accounts:login')
+@require_POST
+def interesting(request, shoes_pk):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
     
-#     shoes = get_object_or_404(Product, pk=shoes_pk)
+    shoes = get_object_or_404(Product, pk=shoes_pk)
 
-#     # 이미 관심 등록 해놨다면 -> 취소
-#     if shoes.wishlist.filter(pk=request.user.pk).exists():
-#         shoes.wishlist.remove(request.user)
-#     # 관심 등록
-#     else:
-#         shoes.wishlist.add(request.user)
+    # 이미 관심 등록 해놨다면 -> 취소
+    if shoes.wish.filter(pk=request.user.pk).exists():
+        shoes.wish.remove(request.user)
+        interested = False
+    # 관심 등록
+    else:
+        shoes.wish.add(request.user)
+        interested = True
+    
+    # JsonResponse를 통해 응답
+    context = {
+        'interested': interested,
+    }
+    return JsonResponse(context)
     
     # 그 전에 있던 페이지로 이동
-    return redirect('drawa:shoes_detail')
+    # return redirect('drawa:shoes_detail')
     # return redirect('drawa:index')
 
 
 
 def favorite(request):
+    products = Product.objects.all()
     context = {
-        
+        'products': products,        
     }
     return render(request, 'drawa/favorite.html', context)
 
@@ -337,4 +478,23 @@ def info(request):
                 is_direct = direct,
             ).save()
             driver.find_element_by_xpath('/html/body/div[2]/div[4]/div/button[2]').click() # X버튼
+    return redirect('drawa:index')
+
+
+def mail(request, draw_pk):
+    draw = get_object_or_404(Draw, pk=draw_pk)
+
+    email = request.user.email
+    if email is not None:
+        subject = f'[드로와] { request.user.first_name }님의 드로우가 시작되었습니다!'
+        message = f'''
+            { request.user.first_name }님의 드로우가 시작되었습니다!
+
+            👟 드로우 정보
+            제품 : {draw.product.name_kor}
+            응모 바로가기 ▶ {draw.url}
+        '''
+        mail = EmailMessage(subject, message, to=[email])
+        mail.send()
+    
     return redirect('drawa:index')

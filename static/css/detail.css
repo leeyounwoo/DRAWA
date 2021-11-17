@@ -1,0 +1,298 @@
+.page-container {
+  width: 1080px !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.productInfo-container {
+  margin-top: 40;
+  padding-bottom: 30px;
+  width: 100%;
+}
+
+.productImg-container {
+  width: 40%;
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+}
+
+.btn-detail-wish {
+  position: absolute;
+  top: 5px;
+  right: 45px;
+  padding: 5px;
+}
+
+.productImg-container > img{
+  padding: 10% 0;
+  width: 90%;
+  background-color: #f3f3f3;
+  text-align: center;
+}
+
+.productDetailInfo-container {
+  width: 57%;
+  margin: 0 1%;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+}
+
+.productDetailInfo-name {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #a5a5a5;
+}
+
+.productFullName_eng {
+  font-size: 21px;
+  margin: 0 0 8px 0;
+  font-weight: bold;
+}
+
+.productFullName_kor {
+  font-size: 15px;
+  color: #777;
+}
+
+.productDetailInfo {
+  margin: 35px 0 10px 0;
+}
+
+.productDetailInfo-subtitle {
+  margin-bottom: 20px;
+}
+
+.productDetailInfo-content {
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+
+.productinfo-cate {
+  display: inline-block;
+  width: 30%;
+  color: #777777;
+}
+
+.productinfo-cateAns {
+  display: inline-block;
+  width: 69%;
+  text-align: right;
+}
+
+.releaseList-countryDiv {
+  width: 100%;
+  padding: 40px 0 70px 0;
+  float: left;
+}
+
+.sub-title {
+  display: block;
+  padding: 0 0 15px 0;
+  font-size: 32px;
+}
+
+.sub-title h4 {
+  display: inline-block;
+  flex-direction: row;
+}
+
+.sub-title h4 span {
+  font-weight: normal;
+  font-size: 20px;
+  color: #666;
+  padding-right: 10px;
+}
+
+.releaseCard {
+  float: left;
+  width: 97%;
+  margin: 1.5% 3% 2% 0;
+  box-shadow: 0px 1px 7px #44444487;
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  position: relative;
+}
+
+.CardContent1 {
+  display: flex;
+  align-items: center;
+}
+
+.CardBell {
+  position: absolute;
+  right: 35px;
+  top: 35px;
+}
+
+.CardLogo {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  margin-right: 1.4rem;
+}
+
+.Card_brandImg {
+  width: 90px;
+  height: 90px;
+  border: 1px solid #c0c0c0;
+  border-radius: 50%;
+}
+.countryflag {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.CardContentList{
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+}
+
+.CardContentList span {
+  width: 320px;
+  font-weight: bold;
+  color: #121212;
+  font-size: 32px;
+
+}
+
+.CardContent2 {
+  display: block;
+  margin-top: 10px;
+  border-top: 1px dotted #23272b38;
+  padding-top: 10px;
+}
+
+.CardContent2-drawTime {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.Cate {
+  margin-right: 1.2rem;
+  font-weight: bold;
+}
+
+.Content {
+  float: right;
+}
+.Cate, .Content {
+  display: inline-block;
+}
+
+.CardContent3 {
+  margin-top: 10px;
+  display: block;
+}
+
+.card_link {
+  border: 1px solid #23272b;
+  background-color: #23272b;
+  color: white;
+  width: 48%;
+  transition: 0.3s;
+}
+
+/* .reserve_link {
+  width: 48%;
+} */
+
+.reserve_card_link {
+  border: 1px solid #23272b;
+  background-color: #23272b;
+  color: white;
+  transition: 0.3s;
+  padding: 0.5rem 1rem;
+}
+
+.card_checkBox {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid #d0d0d0;
+  width: 48%;
+  margin-left: 1%;
+}
+
+.participate_card_link {
+  width: 80%;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid #d0d0d0;
+}
+
+.card_link, .card_checkBox {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0.5rem 1rem;
+}
+
+.reserved_draw {
+  opacity:0.3;
+}
+
+.participate_draw {
+  opacity: 0.3;
+}
+
+.proceeding_btns{
+  width: 80%;
+}
+@media screen and (max-width:1220px){
+  
+  .page-container { 
+    padding:0 2%;
+    margin:0 !important; 
+    width:100% !important; 
+  }
+  .sub-title {
+    font-size:26px;
+  }
+  .sub-title h4 {
+    white-space: nowrap;
+  }
+  .releaseCard {
+    width: 98%;
+    margin: 1.5% 1% 2% 1%;
+  }
+}
+
+
+@media screen and (max-width: 768px){
+  .sub-title {
+    font-size: 24px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .page-container { 
+    padding:0; 
+  }
+  .sub-title {
+    font-size: 24px;
+    padding: 0 4% 15px 4%;
+  }
+  .releaseCard {
+    width: 92%;
+    margin: 3% 4% 5%;
+    padding: 1rem;
+  }
+  .CardContent1 {
+    display: table-caption;
+    text-align: center;
+  }
+  .Card_brandImg{
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    border: 1px solid #dedede;
+  }
+}

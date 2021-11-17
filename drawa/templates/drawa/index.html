@@ -1,21 +1,20 @@
 {% extends 'base.html' %}
+
+{% load filters %}
+
 {% block content %}
 
 <div class="container">
 
-  <h1 class="text-center">Draw Calandar</h1>
+  <h1 class="text-center">Draw Schedule</h1>
 
   <div class="row">
 
-    <aside class="col-1">
-    </aside>
-
-    <main class="col-10">
+    <main class="col-12">
     
       <div class="row">
 
         <h2>진행 중인 제품</h2>
-
 
         {% include 'drawa/now_product_list.html' %}
         
@@ -23,22 +22,16 @@
       
       <br>
 
-      <div class="row">
+      <div>
 
         <h2>다가오는 제품</h2>
 
-        <section>
-          <div></div>
-          <button></button>
-
-        </section>
+        <div id="upcoming-product-list" class="row">
+        </div>
 
       </div>
 
     </main>
-
-    <aside class="col-1">
-    </aside>
 
   </div>
 
@@ -49,19 +42,58 @@
 
 
 {% block script %}
+
+
 <script>
+
+  // 코드에 필요한 함수 선언부
+  // htmlObject에 attrValue를 갖는 attrName을 생성해주는 함수
   function setAttribute(htmlObject, attrName, attrValue) {
     let attr = document.createAttribute(attrName)
     attr.value = attrValue
     htmlObject.setAttributeNode(attr)    
   }
 
+  // endTime - nowTime을 문자열로 반환하는 함수
+  // 시간이 모자랄 경우 '만료'로 반환
+  function getTimeLeft(endTime, nowTime) {
+    let timeLeft = new Date(endTime - nowTime)
+    let timeText = ''
+    if (endTime < nowTime) {
+      timeText = '만료'
+    } else if (parseInt(timeLeft/1000/60/60/24)) {
+      timeText = timeText = `${parseInt(timeLeft/1000/60/60/24)}일`
+    } else {
+      const hour = `${parseInt(timeLeft/1000/60/60)}`.padStart(2, '0')
+      timeLeft = timeLeft - parseInt(hour)*1000*60*60
+      const minute = `${parseInt(timeLeft/1000/60)}`.padStart(2, '0')
+      timeLeft = timeLeft - parseInt(minute)*1000*60
+      const second = `${parseInt(timeLeft/1000)}`.padStart(2, '0')
+      timeText = `${hour}:${minute}:${second}`
+    }
+    return timeText
+  }
+
+  // 1초 지나게 하는 함수
+  function goSecond() {
+    const nowProductTimeSpanList = document.querySelectorAll('.time_count_now span')
+    nowProductTimeSpanList.forEach((timeSpan) => {
+      let time = timeSpan.dataset.time
+      time = time - 1000
+      timeSpan.dataset.time = time
+      timeSpan.innerText = getTimeLeft(time, 0)
+    })
+  }
+
+  // now_products를 위한 carousel 구조화하는 코드
   const carouselIndicator = document.querySelector("#carouselNowProductList .carousel-indicators")
-  // const length = "{{ products.count }}"
-  const length = 10
+  const length = "{{ now_products|length }}"
 
-  const carouselNum = parseInt((length-1)/4+1)
+  const productPerSlide = 3 // 가능한 숫자: 1, 2, 3, 4, 6, 12
 
+  const carouselNum = parseInt((length-1)/productPerSlide+1)
+
+  {% comment %}
   for (let i = 0; i < carouselNum; i++) {
     if (i === 0) {
       const btn = document.createElement('button')
@@ -71,6 +103,7 @@
       // btn.data-bs-slide-to = i
       setAttribute(btn, 'data-bs-slide-to', `${i}`)
       btn.classList.add('active')
+      btn.classList.add('bg-secondary')
       // btn.aria-current = 'true'
       setAttribute(btn, 'aria-current', true)
       // btn.aria-label = `Slide ${i+1}`
@@ -83,16 +116,19 @@
       setAttribute(btn, 'data-bs-target', '#carouselNowProductList')
       // btn.data-bs-slide-to = i
       setAttribute(btn, 'data-bs-slide-to', `${i}`)
+      btn.classList.add('bg-secondary')
       // btn.aria-label = `Slide ${i+1}`
       setAttribute(btn, 'aria-label', `Slide ${i+1}`)
       carouselIndicator.appendChild(btn)
     }
   }
+  {% endcomment %}
 
+  // carousel안에 now_products를 넣는 코드
   const carouselInner = document.querySelector('#carouselNowProductList .carousel-inner')
   let carouselItemLast = null
   for (let i = 0; i < length; i++) {
-    if (i % 4 === 0) {
+    if (i % productPerSlide === 0) {
       const carouselItem = document.createElement('div')
       setAttribute(carouselItem, 'data-bs-interval', 10000)
       carouselItem.classList.add('carousel-item')
@@ -100,23 +136,126 @@
         carouselItem.classList.add('active')
       }
       const row = document.createElement('div')
-      row.classList.add('row', 'row-cols-4')
+      row.classList.add('row')
+
+      const col = document.createElement('div')
+      col.classList.add('col-1')
+      row.appendChild(col)
+
+      //
+      const col2 = document.createElement('div')
+      col2.classList.add('col-10')
+
+      const innerRow = document.createElement('div')
+      innerRow.classList.add('row')
+      setAttribute(innerRow, 'id', `now-product-list-${i/productPerSlide}`)
+      col2.appendChild(innerRow)
+
+      row.appendChild(col2)
+      //
+
+      const col3 = document.createElement('div')
+      col3.classList.add('col-1')
+      row.appendChild(col3)
+
       carouselItem.appendChild(row)
       carouselInner.appendChild(carouselItem)
       carouselItemLast = carouselItem
     }
 
-    const row = carouselItemLast.querySelector('.row')
-    const col = document.createElement('div')
-    col.classList.add('col')
-    // const img = document.createElement('img')
-    // img.src = "/static/img/testimg.jpg"
-    // img.classList.add('d-block', 'w-100')
-    // col.appendChild(img)
-    col.innerHTML = `{% include 'drawa/now_card.html' %}`
-    row.appendChild(col)
+  }  
 
-  }
+  // now_products 및 upcoming_products를 보여주는 코드
+  let nowTime = new Date()
+
+  let nowProduct
+  let nowProductList
+  let endTime
+  let timeLeft
+  let nowProductTimeSpan
+  let nowProductCounter = 0
+  {% for product in now_products %}
+    if (nowProductCounter % productPerSlide === 0) {
+      nowProductList = document.querySelector(`#now-product-list-${parseInt(nowProductCounter/productPerSlide)}`)
+    }
+    nowProduct = document.createElement('div')
+    nowProduct.classList.add(`col-${12/productPerSlide}`)
+    nowProduct.innerHTML = `{% include 'drawa/now_card.html' %}`
+    nowProductList.appendChild(nowProduct)
+
+    nowProductTimeSpan = nowProduct.querySelector('.time_count_now span')
+    endTime = new Date('{{ now_draws|dictionary:product.pk|safe }}')
+    setAttribute(nowProductTimeSpan, 'data-time', endTime - nowTime)
+    nowProductTimeSpan.innerText = getTimeLeft(endTime, nowTime)
+
+    nowProductCounter += 1
+  {% endfor %}
+
+  setInterval(goSecond, 1000)
+  
+  let upcomingProduct
+  const upcomingProductList = document.querySelector('#upcoming-product-list')
+  let upcomingProductTimeSpan
+  let upcomingProductCounter = 0
+  {% for product in upcoming_products %}
+    upcomingProduct = document.createElement('div')
+    upcomingProduct.classList.add('col-3')
+    upcomingProduct.innerHTML = `{% include 'drawa/upcoming_card.html' %}`
+    upcomingProductList.appendChild(upcomingProduct)
+
+    upcomingProductTimeSpan = upcomingProduct.querySelector('.time_count_future span')
+    endTime = new Date('{{ upcoming_draws|dictionary:product.pk|safe }}')
+    upcomingProductTimeSpan.innerText = getTimeLeft(endTime, nowTime)
+
+    nowProductCounter += 1
+    
+  {% endfor %}
+
+  // 각 product별로 관심상품 이벤트 반응함수를 등록하는 코드
+  const interestingFormList = document.querySelectorAll('.index-interesting-form')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  interestingFormList.forEach(interestingForm => {
+    
+    interestingForm.addEventListener('submit', e => {
+      
+      e.preventDefault()
+
+      const productId = e.target.dataset.productId
+
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/drawa/${productId}/interesting/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+        .then(res => {
+          const interested = res.data.interested
+          const interestingBtn = document.querySelector(`#interesting-btn-${productId}`)
+          const fillBookmarkHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+            <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+          </svg>
+          `
+          const emptyBookmarkHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-bookmark" viewBox="0 0 16 16">
+            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+          </svg>
+          `
+
+          if (interested) {
+            interestingBtn.innerHTML = fillBookmarkHTML
+          } else {
+            interestingBtn.innerHTML = emptyBookmarkHTML
+          }
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+    })
+  })
   
 </script>
+
 {% endblock script %}
