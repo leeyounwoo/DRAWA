@@ -11,6 +11,15 @@
     <div class="col-10 align-self-end">
       <div id="brand-list" class="row flex-nowrap overflow-auto">
       </div>
+      <div>
+        <button class="btn pe-0" style="box-shadow: none;" >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square" viewBox="0 0 16 16">
+            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+            <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+          </svg>
+        </button>
+        <span class="align-middle fs-4">관심 상품만 보기</span>
+      </div>
     </div>
     <div class="col-2">
       <h2>필터</h2>
@@ -19,49 +28,6 @@
         <div class="row flex-nowrap overflow-auto" style="height: 200px;">
           <ul id="brand-check-list" style="list-style: none; padding-left: 0px">
           </ul>
-        </div>
-      </div>
-      <div class="my-3">
-        <h3>덤프</h3>
-        <div class="row flex-nowrap overflow-auto" style="height: 200px;">
-          <ul id="brand-check-list" style="list-style: none; padding-left: 0px">
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-          </ul>
-        </div>
-      </div>
-      <div class="my-3">
-        <h3>덤프</h3>
-        <div class="row flex-nowrap overflow-auto card" style="height: 200px;">
-          <ul id="brand-check-list" style="list-style: none; padding-left: 0px;">
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-            <li>덤프</li>
-          </ul>
-        </div>
-      </div>
-
-      <p>
-        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-          Button with data-bs-target
-        </button>
-      </p>
-      <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-          Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
         </div>
       </div>
 
@@ -79,6 +45,16 @@
 
 <script>
 
+  // 함수
+  // htmlObject에 attrValue를 갖는 attrName을 생성해주는 함수
+  function setAttribute(htmlObject, attrName, attrValue) {
+    let attr = document.createAttribute(attrName)
+    attr.value = attrValue
+    htmlObject.setAttributeNode(attr)    
+  }
+  
+
+
   // 필터 내용 받아올 변수
   // product의 brand
   const brands = {}
@@ -93,17 +69,16 @@
   let favoriteProductTimeSpan
   let favoriteProductCounter = 0
   {% for product in products %}
+    console.log('{{ product.name_kor }}')
     favoriteProduct = document.createElement('div')
     favoriteProduct.classList.add(`col-3`)
     favoriteProduct.innerHTML = `{% include 'drawa/now_card.html' %}`
     favoriteProductList.appendChild(favoriteProduct)
 
     if ( !('{{ product.brand }}' in brands) ) {
-      brands['{{ product.brand }}'] = 1
-    } else {
-      brands['{{ product.brand }}'] += 1
+      brands['{{ product.brand }}'] = '{{ product.image_url }}'
     }
-
+    
     if ( !('{{ product.collection }}' in collections) ) {
       collections['{{ product.collection }}'] = 1
     } else {
@@ -111,24 +86,14 @@
     }
   {% endfor %}
 
-  console.log(brands)
-  console.log(collections)
-
-  // 브랜드를 보여주는 코드
-  const length = 12
-  const brandList = document.querySelector('#brand-list')
-  for (i = 0; i < length; i++) {
-    const brand = document.createElement('div')
-    brand.classList.add('col-2')
-    brand.innerHTML = `{% include 'drawa/shoe_brand.html' %}`
-    brandList.appendChild(brand)
-  }
-  
   // 필터들을 보여주는 코드
   const brandCheckList = document.querySelector('#brand-check-list')
   for (brand in brands) {
     const list = document.createElement('li')
-    list.innerHTML = `
+    const filterForm = document.createElement('form')
+    setAttribute(filterForm, 'id', `filter-brand-${brand}`)
+    setAttribute(filterForm, 'is-toggled', false)
+    filterForm.innerHTML = `
     <button class="btn" style="box-shadow: none;" >
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square" viewBox="0 0 16 16">
         <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
@@ -139,7 +104,56 @@
       ${brand}
     </span>
     `
+    filterForm.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const formId = e.target.id
+      const isToggled = e.target.attributes["is-toggled"].value
+      const btn = document.querySelector(`#${formId} button`)
+      if (isToggled === 'true') {
+        btn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square" viewBox="0 0 16 16">
+          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+          <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+        </svg>
+        `
+        e.target.attributes["is-toggled"].value = false
+        const productList = document.querySelectorAll('.productclass')
+      } else {
+        btn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+          <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+        </svg>
+        `
+        e.target.attributes["is-toggled"].value = true
+      }
+
+    })
+
+    list.appendChild(filterForm)
     brandCheckList.appendChild(list)
+  }
+
+  // 브랜드를 보여주는 코드
+  const brandFormList = document.querySelector('#brand-list')
+  for (brand in brands) {
+    const brandForm = document.createElement('form')
+    brandForm.classList.add('col-2')
+    brandForm.innerHTML = `{% include 'drawa/shoe_brand.html' %}`
+    const brandImg = brandForm.querySelector('form div div img')
+    brandImg.src = brands[brand]
+    brandImg.value = brand
+    const brandName = brandForm.querySelector('form div div p')
+    brandName.innerText = brand
+    brandName.value = brand
+    brandFormList.appendChild(brandForm)
+    brandForm.addEventListener('click', (e) => {
+      e.preventDefault()
+      const brand = e.target.value
+      const filter = document.querySelector(`#filter-brand-${brand}`)
+      if (!filter.attributes["is-toggled"].value) {
+        filter.dispatchEvent('submit')
+      }
+    })
   }
 
   {% comment %}  
