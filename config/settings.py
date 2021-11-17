@@ -137,3 +137,12 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# 메일 보내기 관련
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'hhs28166139@gmail.com' # ex) bum752@gmail.com
+EMAIL_HOST_PASSWORD = 'drawa123!' # ex) P@ssw0rd
+DEFAULT_FROM_MAIL = EMAIL_HOST_USER
