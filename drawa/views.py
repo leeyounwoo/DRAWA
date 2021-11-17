@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from django.utils import timezone as tz
-# from selenium import webdriver as wd 
+from selenium import webdriver as wd 
 import time 
 from django.core.mail import EmailMessage
 from rest_framework import status
@@ -446,22 +446,24 @@ def info(request):
                 url = soup.select('.btn_release')[0]['data-url']
            
             if temp_method == '배대지':
-                delivery = True
+                delivery = False
                 direct = False
             elif temp_method == '직배':
-                delivery = True
+                delivery = False
                 direct = True
             elif temp_method == '매장 수령':
-                delivery = False
+                delivery = True
                 direct = False
             elif temp_method == '국내 배송':
                 delivery = True
-                direct = False
+                direct = True
 
             store = soup.select('.popup_content .brand_info .info_area .name')[0].get_text()
+            store_img = soup.select('.popup_content .brand_info img[src]')[0]['src']
             if Store.objects.filter(name=store).exists() == False:
                 Store(
                     name = store,
+                    store_img_url = store_img,
                 ).save()
         
             pro = Product.objects.get(name_kor = k_name)
