@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from django.utils import timezone as tz
-# from selenium import webdriver as wd 
+from selenium import webdriver as wd 
 import time 
 from django.core.mail import EmailMessage
 from rest_framework import status
