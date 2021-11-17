@@ -97,7 +97,6 @@ def detail(request, shoes_pk):
     for draw in proceeding_draws:
         if draw.store.nation == 'Korea':
             if draw.can_delivery == True:
-                
                 # print('국내_온라인', draw)
                 korea_can_delivery_proceeding_draws.append(draw)
             else:               
@@ -163,7 +162,7 @@ def detail(request, shoes_pk):
         'total_proceeding_draw_count': total_proceeding_draw_count,
         'korea_proceeding_draws_count': korea_proceeding_draws_count,
         'abroad_proceeding_draws_count': abroad_proceeding_draws_count,
-        
+
         'korea_can_delivery_proceeding_draws': korea_can_delivery_proceeding_draws,
         'korea_can_delivery_upcoming_draws': korea_can_delivery_upcoming_draws,
         'korea_can_delivery_finished_draws': korea_can_delivery_finished_draws,
