@@ -10,6 +10,9 @@ from urllib.parse import urlparse
 from django.utils import timezone as tz
 # from selenium import webdriver as wd 
 import time 
+from django.core.mail import EmailMessage
+from rest_framework import status
+from rest_framework.response import Response
 
 @require_safe
 def index(request):
@@ -213,6 +216,7 @@ def reserve(request, draw_pk):
         context = {
             'reserved': reserved,
         }
+
         return JsonResponse(context)
     return HttpResponse(status=401)
 
@@ -233,6 +237,8 @@ def participate(request, draw_pk):
         }
         return JsonResponse(context)
     return HttpResponse(status=401)
+
+
 # @login_required
 # @require_safe
 # def place(request):
@@ -471,4 +477,23 @@ def info(request):
                 is_direct = direct,
             ).save()
             driver.find_element_by_xpath('/html/body/div[2]/div[4]/div/button[2]').click() # X버튼
+    return redirect('drawa:index')
+
+
+def mail(request, draw_pk):
+    draw = get_object_or_404(Draw, pk=draw_pk)
+
+    email = request.user.email
+    if email is not None:
+        subject = f'[드로와] { request.user.first_name }님의 드로우가 시작되었습니다!'
+        message = f'''
+            { request.user.first_name }님의 드로우가 시작되었습니다!
+
+            👟 드로우 정보
+            제품 : {draw.product.name_kor}
+            응모 바로가기 ▶ {draw.url}
+        '''
+        mail = EmailMessage(subject, message, to=[email])
+        mail.send()
+    
     return redirect('drawa:index')
